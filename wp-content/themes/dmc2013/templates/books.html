@@ -1,0 +1,136 @@
+			<section id="main" class="books expanded" ng-switch="format" 
+			data-ng-animate="'fade'">
+				<div class="wrapper">
+					<ul class="breadcrumb">
+						<li><a href="/">Home</a> <span class="divider">/</span></li>
+						<li class="active">Books</li>
+					</ul>
+
+					<h2>Books</h2>
+					<form class="options form-horizontal">
+						<label for="orderby">Order:</label>
+						<select class="orderby" id="orderby" ng-model="sortby">
+							<option value="date" selected="selected">Date</option>
+							<option value="title">A-Z</option>
+						</select>
+						<div class="btn-toolbar">
+							<div class="btn-group">
+								<button class="btn showas thumbnails" ng-click="format='icons'" ng-class="{'active':format=='icons'}"><span class="icon icon-th-large"></span></button>
+								<button class="btn showas list" ng-click="format='table'" toggle-format="table" ng-class="{'active':format=='table'}"><span class="icon icon-list"></span></button>
+							</div>
+						</div>
+					</form>
+					
+					<div class="container-fluid" ng-switch-when="icons">
+						<div class="row-fluid" ng-repeat="bookRow in bookRows">
+							<div class="span3" ng-repeat="book in bookRow">
+								<a class="book-link" href="/#/book/{{book.id}}" title="Click here for more info about {{book.title}}">
+									<img  ng-hide="!book.featuredimage.length" src="{{book.featuredimage}}" alt="{{book.title}} cover shot">
+									<img  ng-show="!book.featuredimage.length" src="/wp-content/themes/dmc2013/images/comingsoon_book.png" alt="">
+									<h3><span ng-bind-html-unsafe="book.title"></span></h3>
+									<div class="video-button" ng-show="book.hasvideo==1"><i class="icon icon-play-circle"></i> with on-the-road video!</div>
+								</a>
+							</div>
+						</div>
+					</div>
+
+				</div>
+				<div class="container-fluid" ng-switch-when="table">
+					<div class="row-fluid">
+						
+						<table class="table table-hover table-bordered books-table">
+							<thead>
+								<tr>
+									<th></th>
+									<th data-class="expand">Name <a href="" class="sort" ng-click="sortby='title'"><i class="icon" ng-class="{title:'icon-sort-down', publisher:'icon-sort', date:'icon-sort'}[sortby]"></i></a></th>
+									<th data-hide="phone, tablet">Publisher <a href="" class="sort" ng-click="sortby='publisher'"><i class="icon icon-sort" ng-class="{title:'icon-sort', publisher:'icon-sort-down', date:'icon-sort'}[sortby]"></i></a></th>
+									<th data-hide="phone, tablet">Date Published <a href="" class="sort" ng-click="sortby='date'"><i class="icon icon-sort" ng-class="{title:'icon-sort', publisher:'icon-sort', date:'icon-sort-down'}[sortby]"></i></a></th>
+									<th data-hide="phone">Description</th>
+									<th></th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr ng-repeat="book in books">
+									<td>
+										<img  ng-hide="!book.featuredimage.length" src="{{book.featuredimage}}" alt="{{book.title}} cover shot">
+										<img  ng-show="!book.featuredimage.length" src="/wp-content/themes/dmc2013/images/comingsoon_book.png" alt="">
+									</td>
+									<td>
+										<a href="/#/book/{{book.id}}" title="Click here for more info about {{book.title}}">
+											<h3>
+												<span ng-bind-html-unsafe="book.title"></span>
+											</h3>
+											<div class="video-button" ng-show="book.hasvideo==1"><i class="icon icon-play-circle"></i> with on-the-road video!</div>
+										</a>
+										<span ng-show="book.comingsoon==1">&ndash; coming soon</span>
+									</td>
+									<td>
+										{{book.publisher}}
+									</td>
+									<td>
+										{{book.publisheddate}}
+									</td>
+									<td ng-bind-html-unsafe="book.summary">
+									</td>
+									<td>
+										<a href="/#/book/{{book.title}}" class="btn btn-primary"><span class="icon icon-info-sign"></span> more info</a>
+										<a href="{{book.buylink}}" class="btn btn-primary" title="{{book.buylinktitle}}" ng-hide="!book.buylink.length"><span class="icon icon-shopping-cart"></span> buy</a>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</section>
+
+			<div class="nav">
+				
+			<section id="books" data-ng-animate="'fade'">
+			
+				<a href="/#/books" class="section-toggle books" title="Browse the books I've written or contributed to">
+				
+					<h2>Books</h2>
+
+					<div class="circle"><i class="icon icon-book"></i></div>
+
+				</a>
+			
+			</section><!--
+
+		8--><section id="tv" data-ng-animate="'fade'">
+			
+				<a href="/#/tv/40" class="section-toggle television" title="Watch the TV programmes I've appeared in">
+				
+					<h2>Television</h2>
+
+					<div class="circle"><i class="icon icon-desktop"></i></div>
+
+				</a>
+
+			</section><!--
+
+		8--><section id="apps" data-ng-animate="'fade'">
+			
+				<a href="/#/app/63" class="section-toggle apps" title="Find out about the apps I've created or contributed to">
+				
+					<h2>Apps</h2>
+
+					<div class="circle"><i class="icon icon-mobile-phone"></i></div>
+
+				</a>
+
+			</section><!--
+		
+		8--><section id="articles" data-ng-animate="'fade'">
+			
+				<a href="/#/articles" class="section-toggle articles" title="Browse the articles I've written">
+				
+					<h2>Articles</h2>
+
+					<div class="circle"><i class="icon icon-file-alt"></i></div>
+
+				</a>
+
+			</section>
+
+			</div>

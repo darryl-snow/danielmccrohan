@@ -1,0 +1,111 @@
+			<section id="main" class="articles expanded">
+				<div class="wrapper content">
+					<ul class="breadcrumb">
+						<li><a href="/">Home</a> <span class="divider">/</span></li>
+						<li class="active">Articles</li>
+					</ul>
+					<h2>Articles</h2>
+					<p>Online publications I write regularly for include BBC Travel, lonelyplanet.com, iVillage.co.uk and Men's Journal. If you would like to commission me for a piece of travel writing, please email me at <a href="mailto:daniel@danielmccrohan.com">daniel@danielmccrohan.com</a>. Look forward to hearing from you.</p>
+
+					<div class="related publishers">
+						<div class="logo-container">
+							<img class="bbclogo" src="/wp-content/themes/dmc2013/images/logo-sprite.png" alt="BBC logo">
+						</div><!--
+					8--><div class="logo-container">
+							<img class="lplogo" src="/wp-content/themes/dmc2013/images/logo-sprite.png" alt="BBC logo">
+						</div><!--
+					8--><div class="logo-container">
+							<img class="villagelogo" src="/wp-content/themes/dmc2013/images/logo-sprite.png" alt="BBC logo">
+						</div>
+					</div>
+
+					<ul class="bxslider" carousel="articles">
+						<li ng-repeat="article in articles" ng-hide="!article.featuredimage.length">
+							<a href="{{article.link}}" title="{{article.title}}"><img src="{{article.featuredimage}}" title="{{article.publisher}}: {{article.title}}"></a>
+						</li>
+					</ul>
+
+					<form action="/" class="options form-horizontal">
+						<label for="orderby">Order:</label>
+						<select class="orderby" id="orderby" ng-model="sortby">
+							<option value="title">A-Z</option>
+							<option value="date" selected="selected">Date</option>
+							<option value="publisher">Publisher</option>
+						</select>
+					</form>
+					<table class="table table-hover table-bordered articles-table">
+						<thead>
+							<tr>
+								<th data-class="expand">Title <a href="" class="sort" ng-click="sortby='title'"><i class="icon" ng-class="{title:'icon-sort-down', publisher:'icon-sort', date:'icon-sort'}[sortby]"></i></a></th>
+								<th data-hide="phone, tablet">Publisher <a href="" class="sort" ng-click="sortby='publisher'"><i class="icon" ng-class="{title:'icon-sort', publisher:'icon-sort-down', date:'icon-sort'}[sortby]"></i></a></th>
+								<th data-hide="phone, tablet">Date Published <a href="" class="sort" ng-click="sortby='date'"><i class="icon" ng-class="{title:'icon-sort', publisher:'icon-sort', date:'icon-sort-down'}[sortby]"></i></a></th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr ng-repeat="article in articles">
+								<td>
+									<a href="{{article.link}}"><span ng-bind-html-unsafe="article.title"></span></a>
+								</td>
+								<td>
+									{{article.publisher}}
+								</td>
+								<td>
+									{{article.publisheddate}}
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</section>
+
+			<div class="nav">
+				
+			<section id="books" data-ng-animate="'fade'">
+			
+				<a href="/#/books" class="section-toggle books" title="Browse the books I've written or contributed to">
+				
+					<h2>Books</h2>
+
+					<div class="circle"><i class="icon icon-book"></i></div>
+
+				</a>
+			
+			</section><!--
+
+		8--><section id="tv" data-ng-animate="'fade'">
+			
+				<a href="/#/tv/40" class="section-toggle television" title="Watch the TV programmes I've appeared in">
+				
+					<h2>Television</h2>
+
+					<div class="circle"><i class="icon icon-desktop"></i></div>
+
+				</a>
+
+			</section><!--
+
+		8--><section id="apps" data-ng-animate="'fade'">
+			
+				<a href="/#/app/63" class="section-toggle apps" title="Find out about the apps I've created or contributed to">
+				
+					<h2>Apps</h2>
+
+					<div class="circle"><i class="icon icon-mobile-phone"></i></div>
+
+				</a>
+
+			</section><!--
+		
+		8--><section id="articles" data-ng-animate="'fade'">
+			
+				<a href="/#/articles" class="section-toggle articles" title="Browse the articles I've written">
+				
+					<h2>Articles</h2>
+
+					<div class="circle"><i class="icon icon-file-alt"></i></div>
+
+				</a>
+
+			</section>
+
+			</div>

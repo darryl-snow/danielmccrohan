@@ -1,0 +1,2515 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+    "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US"
+    version="-//W3C//DTD XHTML 1.1//EN" dir="ltr">
+<!-- $Id: Documentation.html 10510 2007-07-20 13:03:09Z lem9 $ -->
+<!--
+    vim: expandtab ts=4 sw=4 sts=4 tw=78
+-->
+
+<head>
+    <link rel="icon" href="./favicon.ico" type="image/x-icon" />
+    <link rel="shortcut icon" href="./favicon.ico" type="image/x-icon" />
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <title>phpMyAdmin 2.10.3 - Documentation</title>
+    <link rel="stylesheet" type="text/css" href="docs.css" />
+</head>
+
+<body id="top">
+
+<!-- TOP MENU -->
+<ul class="header">
+    <li><a href="#top">Top</a></li>
+    <li><a href="#require">Requirements</a></li>
+    <li><a href="#intro">Introduction</a></li>
+    <li><a href="#setup">Installation</a></li>
+    <li><a href="#setup_script">Setup script</a></li>
+    <li><a href="#config">Configuration</a></li>
+    <li><a href="#transformations">Transformations</a></li>
+    <li><a href="#faq"><abbr title="Frequently Asked Questions">FAQ</abbr></a></li>
+    <li><a href="#developers">Developers</a></li>
+    <li><a href="#credits">Credits</a></li>
+    <li><a href="translators.html">Translators</a></li>
+    <li><a href="#glossary">Glossary</a></li>
+</ul>
+
+<h1>phpMyAdmin 2.10.3 Documentation</h1>
+
+<ul><li><a href="http://www.phpmyadmin.net/">
+            phpMyAdmin homepage</a></li>
+    <li><a href="https://sf.net/projects/phpmyadmin/">
+            SourceForge phpMyAdmin project page</a></li>
+    <li><a href="http://wiki.cihar.com">
+            Official phpMyAdmin wiki</a></li>
+    <li>Local documents:
+        <ul><li>Version history: <a href="changelog.php">ChangeLog</a></li>
+            <li>General notes: <a href="readme.php">README</a></li>
+            <li>License: <a href="license.php">LICENSE</a></li>
+        </ul>
+    </li>
+    <li>Documentation version:
+        <i>$Id: Documentation.html 10510 2007-07-20 13:03:09Z lem9 $</i>
+    </li>
+</ul>
+
+<!-- REQUIREMENTS -->
+<h2 id="require">Requirements</h2>
+
+<ul><li><b>PHP</b>
+        <ul><li>You need PHP 4.1.0 or newer, with <tt>session</tt> support
+                (<a href="#faq1_31">see
+                <abbr title="Frequently Asked Questions">FAQ</abbr> 1.31</a>)
+                </li>
+            <li>You need GD2 support in PHP to display inline
+                thumbnails of JPEGs (&quot;image/jpeg: inline&quot;) with their
+                original aspect ratio</li>
+            <li>You need PHP 4.3.0 or newer to use the
+                &quot;text/plain: external&quot;  MIME-based transformation</li>
+        </ul>
+    </li>
+    <li><b>MySQL</b> 3.23.32 or newer (<a href="#faq1_17">details</a>);</li>
+    <li>Not really a requirement but a <b>strong suggestion</b>: if you are using
+        the &quot;cookie&quot; authentication method, having the <tt>mcrypt</tt>
+        PHP extension on your web server accelerates not only the login
+        phase but every other action that you do in phpMyAdmin.</li>
+    <li><b>Web browser</b> with cookies enabled.</li>
+</ul>
+
+<!-- INTRODUCTION -->
+<h2 id="intro">Introduction</h2>
+
+<p> phpMyAdmin can manage a whole MySQL server (needs a super-user) as well as
+    a single database. To accomplish the latter you'll need a properly set up
+    MySQL user who can read/write only the desired database. It's up to you to
+    look up the appropriate part in the MySQL manual.
+</p>
+
+<h3>Currently phpMyAdmin can:</h3>
+
+<ul><li>browse and drop databases, tables, views, fields and indexes</li>
+    <li>create, copy, drop, rename and alter databases, tables, fields and
+        indexes</li>
+    <li>maintenance server, databases and tables, with proposals on server
+        configuration</li>
+    <li>execute, edit and bookmark any
+        <abbr title="structured query language">SQL</abbr>-statement, even
+        batch-queries</li>
+    <li>load text files into tables</li>
+    <li>create<a href="#footnote_1"><sup>1</sup></a> and read dumps of tables
+        </li>
+    <li>export<a href="#footnote_1"><sup>1</sup></a> data to various formats:
+        <abbr title="comma separated values">CSV</abbr>,
+    <abbr title="Extensible Markup Language">XML</abbr>,
+    <abbr title="Portable Document Format">PDF</abbr>,
+    <abbr title="International Standards Organisation">ISO</abbr>/<abbr
+    title="International Electrotechnical Commission">IEC</abbr> 26300 -
+    OpenDocument Text and Spreadsheet,
+    <abbr title="Microsoft Word 2000">Word</abbr>,
+    <abbr title="Microsoft Excel 2000">Excel</abbr> and L<sup>A</sup>T<sub><big>E</big></sub>X formats
+        </li>
+    <li>administer multiple servers</li>
+    <li>manage MySQL users and privileges</li>
+    <li>check referential integrity in MyISAM tables</li>
+    <li>using Query-by-example (QBE), create complex queries automatically
+        connecting required tables</li>
+    <li>create <abbr title="Portable Document Format">PDF</abbr> graphics of
+        your Database layout</li>
+    <li>search globally in a database or a subset of it</li>
+    <li>transform stored data into any format using a set of predefined
+        functions, like displaying BLOB-data as image or download-link
+        </li>
+    <li>support InnoDB tables and foreign keys <a href="#faq3_6">(see
+        <abbr title="Frequently Asked Questions">FAQ</abbr> 3.6)</a></li>
+    <li>support mysqli, the improved MySQL extension <a href="#faq1_17">
+        (see <abbr title="Frequently Asked Questions">FAQ</abbr> 1.17)</a></li>
+    <li>communicate in <a href="./translators.html">50 different languages</a>
+        </li>
+</ul>
+
+<h4>A word about users:</h4>
+<p> Many people have difficulty
+    understanding the concept of user management with regards to phpMyAdmin. When
+    a user logs in to phpMyAdmin, that username and password are passed directly
+    to MySQL. phpMyAdmin does no account management on its own (other than
+    allowing one to manipulate the MySQL user account information); all users
+    must be valid MySQL users.</p>
+
+<p class="footnote" id="footnote_1">
+    <sup>1)</sup> phpMyAdmin can compress (Zip, GZip -RFC 1952- or Bzip2 formats)
+    dumps and <abbr title="comma seperated values">CSV</abbr> exports if you use
+    PHP with Zlib support (<tt>--with-zlib</tt>) and/or Bzip2 support
+    (<tt>--with-bz2</tt>). Proper support may also need changes in
+    <tt>php.ini</tt>.</p>
+
+<!-- INSTALLATION -->
+<h2 id="setup">Installation</h2>
+
+<ol><li><a href="#quick_install">Quick Install</a></li>
+    <li><a href="#setup_script">Setup script usage</a></li>
+    <li><a href="#linked-tables">Linked-tables infrastructure</a></li>
+    <li><a href="#upgrading">Upgrading from an older version</a></li>
+    <li><a href="#authentication_modes">Using authentication modes</a></li>
+</ol>
+
+<p class="important">
+    phpMyAdmin does not apply any special security methods to the MySQL database
+    server. It is still the system administrator's job to grant permissions on
+    the MySQL databases properly. phpMyAdmin's &quot;Privileges&quot; page can
+    be used for this.
+</p>
+
+<p class="important">
+    Warning for <acronym title="Apple Macintosh">Mac</acronym> users:<br />
+    if you are on a <acronym title="Apple Macintosh">Mac</acronym>
+    <abbr title="operating system">OS</abbr> version before
+    <abbr title="operating system">OS</abbr> X, StuffIt unstuffs with
+    <acronym title="Apple Macintosh">Mac</acronym> formats.<br />
+    So you'll have to resave as in BBEdit to Unix style ALL phpMyAdmin scripts
+    before uploading them to your server, as PHP seems not to like
+    <acronym title="Apple Macintosh">Mac</acronym>-style end of lines character
+    (&quot;<tt>\r</tt>&quot;).</p>
+
+<h3 id="quick_install">Quick Install</h3>
+<ol><li>Choose an appropriate distribution kit from the phpmyadmin.net
+	Downloads page. Some kits contain only the English messages, 
+	others contain all languages in UTF-8 format (this should be fine
+	in most situations), others contain all
+	languages and all character sets. We'll assume you chose a kit whose
+	name looks like <tt>phpMyAdmin-x.x.x-all-languages.tar.gz</tt>.	
+	</li>
+    <li>Untar or unzip the distribution (be sure to unzip the subdirectories):
+        <tt>tar -xzvf phpMyAdmin_x.x.x-all-languages.tar.gz</tt> in your webserver's
+        document root. If you don't have direct access to your document root,
+        put the files in a directory on your local machine, and, after step 4,
+        transfer the directory on your web server using, for example, ftp.</li>
+    <li>Ensure that all the scripts have the appropriate owner (if PHP is
+        running in safe mode, having some scripts with an owner different
+        from the owner of other scripts will be a
+        problem). See <a href="#faq4_2">
+        <abbr title="Frequently Asked Questions">FAQ</abbr> 4.2</a> and
+        <a href="#faq1_26"><abbr title="Frequently Asked Questions">FAQ</abbr>
+        1.26</a> for suggestions.</li>
+    <li>Now you must configure your installation. There are two methods that
+        can be used. Traditionally, users have hand-edited a copy of
+        config.inc.php, but now a wizard-style setup script is provided for
+        those who prefer a graphical installation. Creating a config.inc.php is
+        still a quick way to get started and needed for some advanced features.
+        <ul><li>To manually create the file, simply use your text editor to
+                create the file <tt>config.inc.php</tt> (you can copy
+                <tt>config.sample.inc.php</tt> to get minimal configuration
+                file) in the main (top-level) phpMyAdmin directory (the one
+                that contains <tt>index.php</tt>).  phpMyAdmin first loads
+                <tt>libraries/config.default.php</tt> and then overrides those
+                values with anything found in <tt>config.inc.php</tt>. If the
+                default value is okay for a particular setting, there is no
+                need to include it in <tt>config.inc.php</tt>.  You'll need a
+                few directives to get going, a simple configuration may look
+                like this:
+<pre>
+&lt;?php
+$cfg['blowfish_secret'] = 'ba17c1ec07d65003';  // use here a value of your choice
+
+$i=0;
+$i++;
+$cfg['Servers'][$i]['auth_type']     = 'cookie';
+?&gt;
+</pre>
+                Or, if you prefer to not be prompted every time you log in:
+<pre>
+&lt;?php
+
+$i=0;
+$i++;
+$cfg['Servers'][$i]['user']          = 'root';
+$cfg['Servers'][$i]['password']      = 'cbb74bc'; // use here your password
+?&gt;
+</pre>
+                For a full explanation of possible configuration values, see the
+                <a href="#config">Configuration Section</a> of this document.</li>
+            <li id="setup_script">Instead of manually editing
+                <tt>config.inc.php</tt>, you can use the
+                <a href="scripts/setup.php">Setup Script</a>. First you must
+                manually create a folder <tt>config</tt> in the phpMyAdmin
+                directory. This is a security measure. On a Linux/Unix system you
+                can use the following commands:
+<pre>
+cd phpMyAdmin
+mkdir config                        # create directory for saving
+chmod o+rw config                   # give it world writable permissions
+</pre>
+                And to edit an existing configuration, copy it over first:
+<pre>
+cp config.inc.php config/           # copy current configuration for editing
+chmod o+w config/config.inc.php     # give it world writable permissions
+</pre>
+                On other platforms, simply create the folder and ensure that your
+                web server has read and write access to it. <a href="#faq1_26">FAQ
+                1.26</a> can help with this.<br /><br />
+
+                Next, open <tt><a href="scripts/setup.php">scripts/setup.php</a>
+                </tt>in your browser. Note that <strong>changes are not saved to
+                disk until explicitly choose <tt>Save</tt></strong> from the
+                <i>Configuration</i> area of the screen. Normally the script saves
+                the new config.inc.php to the <tt>config/</tt> directory, but if
+                the webserver does not have the proper permissions you may see the
+                error "Cannot load or save configuration." Ensure that the <tt>
+                config/</tt> directory exists and has the proper permissions -
+                or use the <tt>Download</tt> link to save the config file locally
+                and upload (via FTP or some similar means) to the proper location.<br /><br />
+
+                Once the file has been saved, it must be moved out of the <tt>
+                config/</tt> directory and the permissions must be reset, again
+                as a security measure:
+<pre>
+mv config/config.inc.php .         # move file to current directory
+chmod o-rw config.inc.php          # remove world read and write permissions
+</pre>
+                Now the file is ready to be used. You can choose to review or edit
+                the file with your favorite editor, if you prefer to set some
+                advanced options which the setup script does not provide.</li></ul></li>
+    <li>If you are using the
+        <tt>auth_type</tt> &quot;config&quot;, it is suggested that you
+        protect the phpMyAdmin installation directory because using
+        config does not require a user to
+        enter a password to access the phpMyAdmin installation. Use of an alternate
+        authentication method is recommended, for example with
+        HTTP&#8211;AUTH in a <a href="#glossary"><i>.htaccess</i></a> file or switch to using
+        <tt>auth_type</tt> cookie or http. See the
+        <a href="#faqmultiuser"> multi&#8211;user sub&#8211;section</a> of this
+        <abbr title="Frequently Asked Questions">FAQ</abbr> for additional
+        information, especially <a href="#faq4_4">
+        <abbr title="Frequently Asked Questions">FAQ</abbr> 4.4</a>.</li>
+    <li>Open the <a href="index.php">main phpMyAdmin directory</a>
+        in your browser. phpMyAdmin should now display a welcome screen
+        and your databases, or a login dialog if using
+        <abbr title="HyperText Transfer Protocol">HTTP</abbr> or cookie
+        authentication mode.</li>
+    <li>You should deny access to the <tt>./libraries</tt> subfolder in your
+        webserver configuration. For Apache you can use supplied .htaccess file
+        in that folder, for other webservers, you should configure this yourself.
+        Such configuration prevents from possible path exposure and cross side
+        scripting vulnerabilities that might happen to be found in that code.</li>
+</ol>
+
+<h3 id="linked-tables">Linked-tables infrastructure</h3>
+
+<p> For a whole set of new features (bookmarks, comments,
+    <abbr title="structured query language">SQL</abbr>-history,
+    <abbr title="Portable Document Format">PDF</abbr>-generation, field contents
+    transformation, etc.) you need to create a set of special tables. Those
+    tables can be located in your own database, or in a central database for a
+    multi-user installation (this database would then be accessed by the
+    controluser, so no other user should have rights to it).</p>
+
+<p> Please look at your <tt>./scripts/</tt> directory, where you should find a
+    file called <i>create_tables.sql</i>. (If you are using a Windows server, pay
+    special attention to <a href="#faq1_23">
+    <abbr title="Frequently Asked Questions">FAQ</abbr> 1.23</a>).</p>
+
+<p> If your MySQL server's version is 4.1.2 or later, please use
+    <i>./scripts/create_tables_mysql_4_1_2+.sql</i> instead, for a new
+    installation.</p>
+
+<p> If you already had this infrastructure and upgraded to MySQL 4.1.2
+    or later, please use <i>./scripts/upgrade_tables_mysql_4_1_2+.sql</i>.</p>
+
+<p> You can use your phpMyAdmin to create the tables for you. Please be aware
+    that you may need special (administrator) privileges to create the database
+    and tables, and that the script may need some tuning, depending on the
+    database name.</p>
+
+<p> After having imported the <i>./scripts/create_tables.sql</i> file, you
+    should specify the table names in your <i>./config.inc.php</i> file. The
+    directives used for that can be found in the <a href="#config">Configuration
+    section</a>. You will also need to have a controluser with the proper rights
+    to those tables (see section <a href="#authentication_modes">Using
+    authentication modes</a> below).</p>
+
+<h3 id="upgrading">Upgrading from an older version</h3>
+
+<p> Simply copy <i>./config.inc.php</i> from your previous installation into the newly
+    unpacked one. Configuration files from very old versions (2.3.0 or older) may
+    require some tweaking as some options have been changed or removed.</p>
+
+<p> You should <strong>not</strong> copy <tt>libraries/config.default.php</tt>
+    over <tt>config.inc.php</tt> because the default configuration file
+    is version-specific.</p>
+
+<p> If you have upgraded your MySQL server from a version older than 4.1.2 to
+    version 4.1.2 or newer and if you use the pmadb/linked table infrastructure,
+    you should run the SQL script found in
+    <tt>scripts/upgrade_tables_mysql_4_1_2+.sql</tt>.</p>
+
+<h3 id="authentication_modes">Using authentication modes</h3>
+
+<ul><li><abbr title="HyperText Transfer Protocol">HTTP</abbr> and cookie
+        authentication modes are recommended in a <b>multi-user environment</b>
+        where you want to give users access to their own database and don't want
+        them to play around with others.<br />
+        Nevertheless be aware that MS Internet Explorer seems to be really buggy
+        about cookies, at least till version 6, and PHP 4.1.1 is also a bit buggy
+        in this area!<br />
+        Even in a <b>single-user environment</b>, you might prefer to use
+        <abbr title="HyperText Transfer Protocol">HTTP</abbr> or cookie mode so
+        that your user/password pair are not in clear in the configuration file.
+        </li>
+
+    <li><abbr title="HyperText Transfer Protocol">HTTP</abbr> and cookie
+        authentication modes are more secure: the MySQL login information does
+        not need to be set in the phpMyAdmin configuration file (except possibly
+        for the <a href="#controluser">controluser</a>).<br />
+        However, keep in mind that the password travels in plain text, unless
+        you are using the HTTPS protocol.<br />
+        In cookie mode, the password is stored, encrypted with the blowfish
+        algorithm, in a temporary cookie.</li>
+
+    <li>Note: starting with phpMyAdmin 2.6.1, this section is only applicable if
+        your MySQL server is older than 4.1.2, or is running with
+        <tt>--skip-show-database</tt>.<br /><br />
+
+        For '<abbr title="HyperText Transfer Protocol">HTTP</abbr>' and 'cookie'
+        modes, phpMyAdmin needs a controluser that has <b>only</b> the
+        <tt>SELECT</tt> privilege on the <i>`mysql`.`user` (all columns except
+        `Password`)</i>, <i>`mysql`.`db` (all columns)</i>, <i>`mysql`.`host`
+        (all columns)</i> and <i>`mysql`.`tables_priv` (all columns except
+        `Grantor` and `Timestamp`)</i> tables.<br /> You must specify the details
+        for the <a href="#controluser">controluser</a> in the <tt>config.inc.php</tt>
+        file under the
+        <tt><a href="#cfg_Servers_controluser" class="configrule">
+            $cfg['Servers'][$i]['controluser']</a></tt> and
+        <tt><a href="#cfg_Servers_controlpass" class="configrule">
+            $cfg['Servers'][$i]['controlpass']</a></tt> settings.<br />
+        The following example assumes you want to use <tt>pma</tt> as the
+        controluser and <tt>pmapass</tt> as the controlpass, but <b>this is
+        only an example: use something else in your file!</b> Input these
+        statements from the phpMyAdmin SQL Query window or mysql command&#8211;line
+        client.<br />
+        Of course you have to replace <tt>localhost</tt> with the webserver's host
+        if it's not the same as the MySQL server's one.
+
+        <pre>
+GRANT USAGE ON mysql.* TO 'pma'@'localhost' IDENTIFIED BY 'pmapass';
+GRANT SELECT (
+    Host, User, Select_priv, Insert_priv, Update_priv, Delete_priv,
+    Create_priv, Drop_priv, Reload_priv, Shutdown_priv, Process_priv,
+    File_priv, Grant_priv, References_priv, Index_priv, Alter_priv,
+    Show_db_priv, Super_priv, Create_tmp_table_priv, Lock_tables_priv,
+    Execute_priv, Repl_slave_priv, Repl_client_priv
+    ) ON mysql.user TO 'pma'@'localhost';
+GRANT SELECT ON mysql.db TO 'pma'@'localhost';
+GRANT SELECT ON mysql.host TO 'pma'@'localhost';
+GRANT SELECT (Host, Db, User, Table_name, Table_priv, Column_priv)
+    ON mysql.tables_priv TO 'pma'@'localhost';</pre>
+
+        If you are using an old MySQL version (below 4.0.2), please replace
+        the first GRANT SELECT query by this one:
+
+        <pre>
+GRANT SELECT (
+    Host, User, Select_priv, Insert_priv, Update_priv, Delete_priv,
+    Create_priv, Drop_priv, Reload_priv, Shutdown_priv, Process_priv,
+    File_priv, Grant_priv, References_priv, Index_priv, Alter_priv
+    ) ON mysql.user TO 'pma'@'localhost';</pre>
+
+        ... and if you want to use the many new relation and bookmark features:
+
+        <pre>
+GRANT SELECT, INSERT, UPDATE, DELETE ON &lt;pma_db&gt;.* TO 'pma'@'localhost';
+</pre>
+
+        (this of course requires that your <a href="#linked-tables">linked-tables
+        infrastructure</a> be set up).<br />
+        Of course, the above queries only work if your MySQL version supports
+        the GRANT command. This is the case since 3.22.11.</li>
+
+    <li>Then each of the <i>true</i> users should be granted a set of privileges
+        on a set of particular databases. Normally you shouldn't give global
+        privileges to an ordinary user, unless you understand the impact of those
+        privileges (for example, you are creating a superuser).<br />
+        For example, to grant the user <i>real_user</i> with all privileges on
+        the database <i>user_base</i>:<br />
+
+        <pre>
+GRANT ALL PRIVILEGES ON user_base.* TO 'real_user'@localhost IDENTIFIED BY 'real_password';
+</pre>
+
+        What the user may now do is controlled entirely by the MySQL user
+        management system.<br />
+        With <abbr title="HyperText Transfer Protocol">HTTP</abbr> or cookie
+        authentication mode, you don't need to fill the user/password fields
+        inside the <a href="#cfg_Servers" class="configrule">$cfg['Servers']</a>
+        array.</li>
+</ul>
+
+<h4>'<abbr title="HyperText Transfer Protocol">HTTP</abbr>' authentication mode</h4>
+
+<ul><li>Uses <abbr title="HyperText Transfer Protocol">HTTP</abbr> Basic authentication
+        method and allows you to log in as any valid MySQL user.</li>
+    <li>Is supported with most PHP configurations. For
+        <abbr title="Internet Information Services">IIS</abbr>
+        (<abbr title="Internet Server Application Programming Interface">ISAPI</abbr>)
+        support using <abbr title="Common Gateway Interface">CGI</abbr> PHP see
+        <a href="#faq1_32"><abbr title="Frequently Asked Questions">FAQ</abbr>
+        1.32</a>, for using with Apache
+        <abbr title="Common Gateway Interface">CGI</abbr> see
+        <a href="#faq1_35"><abbr title="Frequently Asked Questions">FAQ</abbr>
+        1.35</a>.</li>
+    <li>See also <a href="#faq4_4">
+        <abbr title="Frequently Asked Questions">FAQ</abbr> 4.4</a> about not
+        using the <i>.htaccess</i> mechanism along with
+        '<abbr title="HyperText Transfer Protocol">HTTP</abbr>' authentication
+        mode.</li>
+</ul>
+
+<h4>'cookie' authentication mode</h4>
+
+<ul><li>You can use this method as a replacement for the
+        <abbr title="HyperText Transfer Protocol">HTTP</abbr> authentication
+        (for example, if you're running
+        <abbr title="Internet Information Services">IIS</abbr>).</li>
+    <li>Obviously, the user must enable cookies in the browser, but this is
+    now a requirement for all authentication modes.</li>
+    <li>With this mode, the user can truly log out of phpMyAdmin and log in back
+        with the same username.</li>
+    <li>If you want to log in to arbitrary server see
+        <a href="#AllowArbitraryServer" class="configrule">
+        $cfg['AllowArbitraryServer']</a> directive.</li>
+    <li>As mentioned in the <a href="#require">requirements</a> section, having
+        the <tt>mcrypt</tt> extension will speed up access considerably, but is
+        not required.</li>
+</ul>
+
+<h4>'config' authentication mode</h4>
+
+<ul><li>This mode is the less secure one because it requires you to fill the
+        <a href="#servers_user" class="configrule">
+        $cfg['Servers'][$i]['user']</a> and
+        <a href="#servers_user" class="configrule">
+        $cfg['Servers'][$i]['password']</a> fields (and as a result, anyone who
+        can read your config.inc.php can discover your username and password).
+        <br />
+        But you don't need to setup a &quot;controluser&quot; here: using the
+        <a href="#servers_only_db" class="configrule">
+        $cfg['Servers'][$i]['only_db']</a> might be enough.</li>
+    <li>In the <a href="#faqmultiuser">
+        <abbr title="Internet service provider">ISP</abbr>
+        <abbr title="Frequently Asked Questions">FAQ</abbr></a> section, there
+        is an entry explaining how to protect your configuration file.</li>
+    <li>For additional security in this mode, you may wish to consider the Host
+        authentication
+        <a href="#servers_allowdeny_order" class="configrule">
+            $cfg['Servers'][$i]['AllowDeny']['order']</a> and
+        <a href="#servers_allowdeny_rules" class="configrule">
+            $cfg['Servers'][$i]['AllowDeny']['rules']</a> configuration
+        directives.</li>
+    <li>Unlike cookie and http, does not require a user to log in when first
+        loading the phpMyAdmin site. This is by design but could allow any
+        user to access your installation. Use of some restriction method is
+        suggested, perhaps a <a href="#glossary">.htaccess</a> file with the
+        HTTP-AUTH directive or disallowing incoming HTTP requests at
+        one&#8217;s router or firewall will suffice (both of which
+        are beyond the scope of this manual but easily searchable with Google).</li>
+</ul>
+
+<!-- CONFIGURATION -->
+<h2 id="config">Configuration</h2>
+
+<p> <span class="important">Warning for <acronym title="Apple Macintosh">Mac</acronym>
+    users:</span> PHP does not seem to like
+    <acronym title="Apple Macintosh">Mac</acronym> end of lines character
+    (&quot;<tt>\r</tt>&quot;). So ensure you choose the option that allows to use
+    the *nix end of line character (&quot;<tt>\n</tt>&quot;) in your text editor
+    before saving a script you have modified.</p>
+
+<p> <span class="important">Configuration note:</span>
+    Almost all configurable data is placed in <tt>config.inc.php</tt>. If this file
+    does not exist, please refer to the <a href="#setup">Quick install</a>
+    section to create one. This file only needs to contain the parameters you want to
+    change from their corresponding default value in
+    <tt>libraries/config.default.php</tt>.</p>
+
+<p> The parameters which relate to design (like colors) are placed in
+    <tt>themes/themename/layout.inc.php</tt>. You might also want to create
+    <i>config.footer.inc.php</i> and <i>config.header.inc.php</i> files to add
+    your site specific code to be included on start and end of each page.</p>
+
+<dl><dt id="cfg_PmaAbsoluteUri">$cfg['PmaAbsoluteUri'] string</dt>
+    <dd>Sets here the complete <abbr title="Uniform Resource Locator">URL</abbr>
+        (with full path) to your phpMyAdmin installation's directory.
+        E.g. <tt>http://www.your_web.net/path_to_your_phpMyAdmin_directory/</tt>.
+        Note also that the <abbr title="Uniform Resource Locator">URL</abbr> on
+        some web servers are case&#8211;sensitive.
+        Don&#8217;t forget the trailing slash at the end.<br /><br />
+
+        Starting with version 2.3.0, it is advisable to try leaving this
+        blank. In most cases phpMyAdmin automatically detects the proper
+        setting. Users of port forwarding will need to set PmaAbsoluteUri (<a
+        href="https://sf.net/tracker/index.php?func=detail&amp;aid=1340187&amp;group_id=23067&amp;atid=377409">more info</a>).
+        A good test is to browse a table, edit a row and save it. There should
+        be an error message if phpMyAdmin is having trouble auto&#8211;detecting
+        the correct value. If you get an error that this must be set or if
+        the autodetect code fails to detect your path, please post a bug
+        report on our bug tracker so we can improve the code.</dd>
+
+    <dt id="cfg_PmaNoRelation_DisableWarning">$cfg['PmaNoRelation_DisableWarning'] boolean</dt>
+    <dd>Starting with version 2.3.0 phpMyAdmin offers a lot of features to work
+        with master / foreign &#8211; tables (see
+        <a href="#pmadb" class="configrule">$cfg['Servers'][$i]['pmadb']</a>).
+        <br />
+        If you tried to set this up and it does not work for you, have a look on
+        the &quot;Structure&quot; page of one database where you would like to
+        use it. You will find a link that will analyze why those features have
+        been disabled.<br />
+        If you do not want to use those features set this variable to
+        <tt>TRUE</tt> to stop this message from appearing.</dd>
+
+    <dt id="cfg_blowfish_secret">$cfg['blowfish_secret'] string</dt>
+    <dd>The &quot;cookie&quot; auth_type uses blowfish
+        algorithm to encrypt the password.<br />
+        If you are using the &quot;cookie&quot; auth_type, enter here a random
+        passphrase of your choice. It will be used internally by the blowfish
+        algorithm: you won&#8217;t be prompted for this passphrase. The maximum
+        number of characters for this parameter seems to be 46.</dd>
+
+    <dt id="cfg_Servers">$cfg['Servers'] array</dt>
+    <dd>Since version 1.4.2, phpMyAdmin supports the administration of multiple
+        MySQL servers. Therefore, a
+        <a href="#cfg_Servers" class="configrule">$cfg['Servers']</a>-array has
+        been added which contains the login information for the different servers.
+        The first
+        <a href="#cfg_Servers_host" class="configrule">$cfg['Servers'][$i]['host']</a>
+        contains the hostname of the first server, the second
+        <a href="#cfg_Servers_host" class="configrule">$cfg['Servers'][$i]['host']</a>
+        the hostname of the second server, etc. In
+        <tt>./libraries/config.default.php</tt>, there is only one section for
+        server definition, however you can put as many as you need in
+        <tt>./config.inc.php</tt>, copy that block or needed parts (you don't
+        have to define all settings, just those you need to change).</dd>
+
+    <dt id="cfg_Servers_host">$cfg['Servers'][$i]['host'] string</dt>
+    <dd>The hostname or <abbr title="Internet Protocol">IP</abbr> address of your
+        $i-th MySQL-server. E.g. localhost.</dd>
+
+    <dt id="cfg_Servers_port">$cfg['Servers'][$i]['port'] string</dt>
+    <dd>The port-number of your $i-th MySQL-server. Default is 3306 (leave
+        blank). If you use &quot;localhost&quot; as the hostname, MySQL
+        ignores this port number and connects with the socket, so if you want
+        to connect to a port different from the default port, use
+        &quot;127.0.0.1&quot; or the real hostname in
+        <a href="#cfg_Servers_host" class="configrule">$cfg['Servers'][$i]['host']</a>.
+    </dd>
+
+    <dt id="cfg_Servers_socket">$cfg['Servers'][$i]['socket'] string</dt>
+    <dd>The path to the socket to use. Leave blank for default.<br />
+        To determine the correct socket, check your MySQL configuration or, using the
+        <tt>mysql</tt> command&#8211;line client, issue the <tt>status</tt> command.
+        Among the resulting information displayed will be the socket used.</dd>
+
+    <dt id="cfg_Servers_ssl">$cfg['Servers'][$i]['ssl'] boolean</dt>
+    <dd>Whether to enable SSL for connection to MySQL server.
+    </dd>
+
+    <dt id="cfg_Servers_connect_type">$cfg['Servers'][$i]['connect_type'] string</dt>
+    <dd>What type connection to use with the MySQL server. Your options are
+        <tt>'socket'</tt> and <tt>'tcp'</tt>. It defaults to 'tcp' as that
+        is nearly guaranteed to be available on all MySQL servers, while
+        sockets are not supported on some platforms.<br /><br />
+
+        To use the socket mode, your MySQL server must be on the same machine
+        as the Web server.</dd>
+
+    <dt id="cfg_Servers_extension">$cfg['Servers'][$i]['extension'] string</dt>
+    <dd>What php MySQL extension to use for the connection. Valid options are:
+        <br /><br />
+
+        <tt><i>mysql</i></tt> :
+        The classic MySQL extension. This is the recommended and default
+        method at this time.<br /><br />
+
+        <tt><i>mysqli</i></tt> :
+        The improved MySQL extension. This extension became available
+        with php 5.0.0 and is the recommended way to connect to a server
+        running MySQL 4.1.x.</dd>
+
+    <dt id="cfg_Servers_compress">$cfg['Servers'][$i]['compress'] boolean</dt>
+    <dd>Whether to use a compressed protocol for the MySQL server connection
+        or not (experimental).<br />
+        This feature requires PHP&nbsp;&gt;=&nbsp;4.3.0.</dd>
+
+    <dt id="controluser">
+        <span id="cfg_Servers_controluser">$cfg['Servers'][$i]['controluser']</span> string<br />
+        <span id="cfg_Servers_controlpass">$cfg['Servers'][$i]['controlpass']</span> string
+    </dt>
+    <dd>This special account is used for 2 distinct purposes: to make possible
+        all relational features (see
+        <a href="#pmadb" class="configrule">$cfg['Servers'][$i]['pmadb']</a>)
+        and, for a MySQL server older than 4.1.2 or running with
+        <tt>--skip-show-database</tt>, to enable a multi-user installation
+        (<abbr title="HyperText Transfer Protocol">HTTP</abbr> or cookie
+        authentication mode).<br /><br />
+
+        When using <abbr title="HyperText Transfer Protocol">HTTP</abbr> or
+        cookie authentication modes (or 'config'
+        authentication mode since phpMyAdmin 2.2.1), you need to supply the
+        details of a MySQL account that has <tt>SELECT</tt> privilege on the
+        <i>mysql.user (all columns except &quot;Password&quot;)</i>,
+        <i>mysql.db (all columns)</i> and <i>mysql.tables_priv (all columns
+        except &quot;Grantor&quot; and &quot;Timestamp&quot;) </i>tables.
+        This account is used to check what databases the user will see at
+        login.<br />
+        Please see the <a href="#setup">install section</a> on
+        &quot;Using authentication modes&quot; for more information.<br /><br />
+
+        In phpMyAdmin versions before 2.2.5, those were called
+        &quot;stduser/stdpass&quot;.</dd>
+
+    <dt id="cfg_Servers_auth_type">$cfg['Servers'][$i]['auth_type'] string
+        <tt>['<abbr title="HyperText Transfer Protocol">HTTP</abbr>'|'http'|'cookie'|'config'|'signon']</tt></dt>
+    <dd>Whether config or cookie or
+        <abbr title="HyperText Transfer Protocol">HTTP</abbr> or signon authentication
+        should be used for this server.
+        <ul><li>'config' authentication (<tt>$auth_type&nbsp;=&nbsp;'config'</tt>)
+                is the plain old way: username and password are stored in
+                <i>config.inc.php</i>.</li>
+            <li>'cookie' authentication mode
+                (<tt>$auth_type&nbsp;=&nbsp;'cookie'</tt>) as introduced in
+                2.2.3 allows you to log in as any valid MySQL user with the
+                help of cookies. Username and password are stored in
+                cookies during the session and password is deleted when it
+                ends. This can also allow you to log in in arbitrary server if
+                <tt><a href="#AllowArbitraryServer" class="configrule">$cfg['AllowArbitraryServer']</a></tt> enabled.
+            </li>
+            <li>'<abbr title="HyperText Transfer Protocol">HTTP</abbr>' authentication (was called 'advanced' in older versions and can be written also as 'http')
+                (<tt>$auth_type&nbsp;=&nbsp;'<abbr title="HyperText Transfer Protocol">HTTP</abbr>'</tt>) as introduced in 1.3.0
+                allows you to log in as any valid MySQL user via HTTP-Auth.</li>
+            <li>'signon' authentication mode 
+                (<tt>$auth_type&nbsp;=&nbsp;'signon'</tt>)
+                as introduced in 2.10.0 allows you to log in from prepared PHP
+                session data. This is useful for implementing single signon
+                from another application. Sample way how to seed session is in
+                signon example: <code>scripts/signon.php</code>. You need to
+                configure <a href="#cfg_Servers_SignonSession"
+                class="configrule">session name</a> and <a
+                href="#cfg_Servers_SignonURL" class="configrule">signon
+                URL</a> to use this authentication method.</li>
+        </ul>
+
+        Please see the <a href="#setup">install section</a> on &quot;Using authentication modes&quot;
+        for more information.
+    </dd>
+    <dt id="servers_user">
+        <span id="cfg_Servers_user">$cfg['Servers'][$i]['user']</span> string<br />
+        <span id="cfg_Servers_password">$cfg['Servers'][$i]['password']</span> string
+    </dt>
+    <dd>
+        When using auth_type = 'config', this is the user/password-pair
+        which phpMyAdmin will use to connect to the
+        MySQL server. This user/password pair is not needed when <abbr title="HyperText Transfer Protocol">HTTP</abbr> or
+        cookie authentication is used and should be empty.</dd>
+    <dt id="servers_nopassword">
+        <span
+        id="cfg_Servers_nopassword">$cfg['Servers'][$i]['nopassword']</span> boolean
+    </dt>
+    <dd>
+        Allow attempt to log in without password when a login with password
+        fails. This can be used together with http authentication, when
+        authentication is done some other way and phpMyAdmin gets user name
+        from auth and uses empty password for connecting to MySQL. Password
+        login is still tried first, but as fallback, no password method is
+        tried.</dd>
+    <dt id="servers_only_db">
+        <span id="cfg_Servers_only_db">$cfg['Servers'][$i]['only_db']</span> string or array
+    </dt>
+    <dd>
+        If set to a (an array of) database name(s), only this (these) database(s)
+        will be shown to the user. Since phpMyAdmin 2.2.1, this/these
+        database(s) name(s) may contain MySQL wildcards characters
+        (&quot;_&quot; and &quot;%&quot;): if you want to use literal instances
+        of these characters, escape them (I.E. use <tt>'my\_db'</tt> and not
+        <tt>'my_db'</tt>).<br />
+        This setting is an efficient way to lower the server load since the
+        latter does not need to send MySQL requests to build the available
+        database list. But <span class="important">it does not replace the
+        privileges rules of the MySQL database server</span>. If set, it just
+        means only these databases will be displayed but
+        <span class="important">not that all other databases can't be used.</span>
+        <br /><br />
+
+        An example of using more that one database:
+        <tt>$cfg['Servers'][$i]['only_db'] = array('db1', 'db2');</tt>
+        <br /><br />
+
+        As of phpMyAdmin 2.5.5 the order inside the array is used for sorting the
+        databases in the left frame, so that you can individually arrange your databases.<br />
+        If you want to have certain databases at the top, but don't care about the others, you do not
+        need to specify all other databases. Use:
+        <tt>$cfg['Servers'][$i]['only_db'] = array('db3', 'db4', '*');</tt>
+        instead to tell phpMyAdmin that it should display db3 and db4 on top, and the rest in alphabetic
+        order.</dd>
+
+    <dt><span id="cfg_Servers_hide_db">$cfg['Servers'][$i]['hide_db']</span> string
+    </dt>
+    <dd>Regular expression for hiding some databases. This only hides them
+        from listing, but a user is still able to access them (using, for example,
+        the SQL query area). To limit access, use the MySQL privilege system.
+        <br /><br />
+        For example, to hide all databases starting with the letter &#34;a&#34;, use<br />
+        <pre>$cfg['Servers'][$i]['hide_db'] = '^a';</pre>
+        and to hide both &#34;db1&#34; and &#34;db2&#34; use <br />
+        <pre>$cfg['Servers'][$i]['hide_db'] = '(db1|db2)';</pre>
+        More information on regular expressions can be found in the
+        <a href="http://php.net/manual/en/reference.pcre.pattern.syntax.php">
+        PCRE pattern syntax</a> portion of the PHP reference manual.
+        </dd>
+
+    <dt id="cfg_Servers_verbose">$cfg['Servers'][$i]['verbose'] string</dt>
+    <dd>Only useful when using phpMyAdmin with multiple server entries. If set,
+        this string will be displayed instead of the hostname in the pull-down
+        menu on the main page. This can be useful if you want to show only
+        certain databases on your system, for example.</dd>
+
+    <dt id="pmadb">
+        <span id="cfg_Servers_pmadb">$cfg['Servers'][$i]['pmadb']</span> string
+    </dt>
+    <dd>The name of the database containing the linked-tables infrastructure.
+        <br /><br />
+
+        See the <a href="#linked-tables">Linked-tables infrastructure</a>
+        section in this document to see the benefits of this infrastructure,
+        and for a quick way of creating this database and the needed tables.
+        <br /><br />
+
+        If you are the only user of this phpMyAdmin installation, you can
+        use your current database to store those special tables; in this
+        case, just put your current database name in
+        <tt>$cfg['Servers'][$i]['pmadb']</tt>. For a multi-user installation,
+        set this parameter to the name of your central database containing
+        the linked-tables infrastructure.</dd>
+
+    <dt id="bookmark">
+        <span id="cfg_Servers_bookmarktable">$cfg['Servers'][$i]['bookmarktable']</span> string
+    </dt>
+    <dd>Since release 2.2.0 phpMyAdmin allows users to bookmark queries. This can be
+        useful for queries you often run.<br /><br />
+
+        To allow the usage of this functionality:
+        <ul><li>set up <a href="#pmadb">pmadb</a> and the linked-tables infrastructure</li>
+            <li>enter the table name in
+                <tt>$cfg['Servers'][$i]['bookmarktable']</tt></li>
+        </ul>
+    </dd>
+
+    <dt id="relation">
+        <span id="cfg_Servers_relation">$cfg['Servers'][$i]['relation']</span> string
+    </dt>
+    <dd>Since release 2.2.4 you can describe, in a special 'relation' table,
+        which field is a key in another table (a foreign key). phpMyAdmin
+        currently uses this to
+        <ul><li>make clickable, when you browse the master table, the data values
+                that point to the foreign table;</li>
+            <li>display in an optional tool-tip the &quot;display field&quot;
+                when browsing the master table, if you move the mouse to a column
+                containing a foreign key (use also the 'table_info' table);<br />
+                (see <a href="#faqdisplay"><abbr title="Frequently Asked Questions">
+                FAQ</abbr> 6.7</a>)</li>
+            <li>in edit/insert mode, display a drop-down list of possible foreign
+                keys (key value and &quot;display field&quot; are shown)<br />
+                (see <a href="#faq6_21"><abbr title="Frequently Asked Questions">
+                FAQ</abbr> 6.21</a>)</li>
+            <li>display links on the table properties page, to check referential
+                integrity (display missing foreign keys) for each described key;
+            </li>
+            <li>in query-by-example, create automatic joins (see <a href="#faq6_6">
+                <abbr title="Frequently Asked Questions">FAQ</abbr> 6.6</a>)</li>
+            <li>enable you to get a <abbr title="Portable Document Format">PDF</abbr>
+                schema of your database (also uses the table_coords table).</li>
+        </ul>
+
+        The keys can be numeric or character.<br /><br />
+
+        To allow the usage of this functionality:
+
+        <ul><li>set up <a href="#pmadb">pmadb</a> and the linked-tables
+                infrastructure</li>
+            <li>put the relation table name in
+                <tt>$cfg['Servers'][$i]['relation']</tt></li>
+            <li>now as normal user open phpMyAdmin and for each one of your
+                tables where you want to use this feature, click
+                &quot;Structure/Relation view/&quot; and choose foreign fields.
+                </li>
+        </ul>
+
+        Please note that in the current version, <tt>master_db</tt>
+        must be the same as <tt>foreign_db</tt>. Those fields have been put in
+        future development of the cross-db relations.
+    </dd>
+
+    <dt id="table_info">
+        <span id="cfg_Servers_table_info">$cfg['Servers'][$i]['table_info']</span> string
+    </dt>
+    <dd>
+        Since release 2.3.0 you can describe, in a special 'table_info'
+        table, which field is to be displayed as a tool-tip when moving the
+        cursor over the corresponding key.<br />
+        This configuration variable will hold the name of this special
+        table. To allow the usage of this functionality:
+        <ul><li>set up <a href="#pmadb">pmadb</a> and the linked-tables infrastructure</li>
+            <li>put the table name in
+                <tt>$cfg['Servers'][$i]['table_info']</tt></li>
+            <li>then for each table where you want to use this feature,
+                click &quot;Structure/Relation view/Choose field to display&quot;
+                to choose the field.</li>
+        </ul>
+        Usage tip: <a href="#faqdisplay">Display field</a>.
+    </dd>
+    <dt id="table_coords">
+        <span id="cfg_Servers_table_coords">$cfg['Servers'][$i]['table_coords']</span> string<br />
+        <span id="cfg_Servers_pdf_pages">$cfg['Servers'][$i]['pdf_pages']</span> string
+    </dt>
+    <dd>Since release 2.3.0 you can have phpMyAdmin create
+        <abbr title="Portable Document Format">PDF</abbr> pages showing
+        the relations between your tables. To do this it needs two tables
+        &quot;pdf_pages&quot; (storing information about the available
+        <abbr title="Portable Document Format">PDF</abbr>
+        pages) and &quot;table_coords&quot; (storing coordinates where each
+        table will be placed on a <abbr title="Portable Document Format">PDF</abbr>
+        schema output).<br /><br />
+
+        You must be using the &quot;relation&quot; feature.<br /><br />
+
+        To allow the usage of this functionality:
+
+        <ul><li>set up <a href="#pmadb">pmadb</a> and the linked-tables
+                infrastructure</li>
+            <li>put the correct table names in
+                <tt>$cfg['Servers'][$i]['table_coords']</tt> and
+                <tt>$cfg['Servers'][$i]['pdf_pages']</tt></li>
+        </ul>
+
+        Usage tips: <a href="#faqpdf"><abbr title="Portable Document Format">PDF</abbr> output</a>.
+    </dd>
+
+    <dt id="col_com">
+        <span id="cfg_Servers_column_info">$cfg['Servers'][$i]['column_info']</span> string
+    </dt>
+    <dd><!-- This part requires a content update! -->
+        Since release 2.3.0 you can store comments to describe each column for
+        each table. These will then be shown on the &quot;printview&quot;.
+        <br /><br />
+
+        Starting with release 2.5.0, comments are consequently used on the table
+        property pages and table browse view, showing up as tool-tips above the
+        column name (properties page) or embedded within the header of table in
+        browse view. They can also be shown in a table dump. Please see the
+        relevant configuration directives later on.<br /><br />
+
+        Also new in release 2.5.0 is a MIME-transformation system which is also
+        based on the following table structure. See <a href="#transformations">
+        Transformations</a> for further information. To use the
+        MIME-transformation system, your column_info table has to have the three
+        new fields 'mimetype', 'transformation', 'transformation_options'.
+        <br /><br />
+
+        To allow the usage of this functionality:
+        <ul><li>set up <a href="#pmadb">pmadb</a> and the linked-tables
+                infrastructure</li>
+            <li>put the table name in
+                <tt>$cfg['Servers'][$i]['column_info']</tt></li>
+            <li>to update your PRE-2.5.0 Column_comments Table use this:
+
+                <pre>
+ALTER TABLE `pma_column_comments`
+    ADD `mimetype` VARCHAR( 255 ) NOT NULL,
+    ADD `transformation` VARCHAR( 255 ) NOT NULL,
+    ADD `transformation_options` VARCHAR( 255 ) NOT NULL;
+</pre>
+
+                and remember that the Variable in <i>config.inc.php</i> has been
+                renamed from<br />
+                <tt>$cfg['Servers'][$i]['column_comments']</tt> to
+                <tt>$cfg['Servers'][$i]['column_info']</tt></li>
+        </ul>
+    </dd>
+
+    <dt id="history">
+        <span id="cfg_Servers_history">$cfg['Servers'][$i]['history']</span> string
+    </dt>
+    <dd>Since release 2.5.0 you can store your
+        <abbr title="structured query language">SQL</abbr> history, which means
+        all queries you entered manually into the phpMyAdmin interface. If you
+        don't want to use a table-based history, you can use the JavaScript-based
+        history. Using that, all your history items are deleted when closing the
+        window.<br /><br />
+
+        Using
+        <a href="#cfg_QueryHistoryMax" class="configrule">$cfg['QueryHistoryMax']</a>
+        you can specify an amount of history items you want to have on hold. On
+        every login, this list gets cut to the maximum amount.<br /><br />
+
+        The query history is only available if JavaScript is enabled in your
+        browser.<br /><br />
+
+        To allow the usage of this functionality:
+
+        <ul><li>set up <a href="#pmadb">pmadb</a> and the linked-tables
+                infrastructure</li>
+            <li>put the table name in <tt>$cfg['Servers'][$i]['history']</tt>
+                </li>
+        </ul>
+    </dd>
+
+    <dt id="designer_coords">
+        <span id="cfg_Servers_designer_coords">$cfg['Servers'][$i]['designer_coords']</span> string
+    </dt>
+    <dd>Since release 2.10.0 a Designer interface is available; it permits
+        to visually manage the relations. 
+        <br /><br />
+
+        To allow the usage of this functionality:
+
+        <ul><li>set up <a href="#pmadb">pmadb</a> and the linked-tables
+                infrastructure</li>
+            <li>put the table name in <tt>$cfg['Servers'][$i]['designer_coords']</tt>
+                </li>
+        </ul>
+    </dd>
+
+    <dt><span id="cfg_Servers_verbose_check">$cfg['Servers'][$i]['verbose_check']</span> boolean
+    </dt>
+    <dd>Because release 2.5.0 introduced the new MIME-transformation support, the
+        column_info table got enhanced with three new fields. If the above variable
+        is set to <tt>TRUE</tt> (default) phpMyAdmin will check if you have the
+        latest table structure available. If not, it will emit a warning to the
+        superuser.<br /><br />
+
+        You can disable this checking behavior by setting the variable to false,
+        which should offer a performance increase.<br /><br />
+
+        Recommended to set to FALSE, when you are sure, your table structure is
+        up to date.</dd>
+    <dt><span id="cfg_Servers_AllowRoot">$cfg['Servers'][$i]['AllowRoot']</span>
+        boolean</dt>
+    <dd>Whether to allow root access. This is just simplification of rules below.
+    </dd>
+    <dt id="servers_allowdeny_order">
+        <span id="cfg_Servers_AllowDeny_order">$cfg['Servers'][$i]['AllowDeny']['order']</span> string
+    </dt>
+    <dd>If your rule order is empty, then <abbr title="Internet Protocol">IP</abbr>
+        authentication is disabled.<br /><br />
+
+        If your rule order is set to <tt>'deny,allow'</tt> then the system applies
+        all deny rules followed by allow rules. Access is allowed by default. Any
+        client which does not match a Deny command or does match an Allow command
+        will be allowed access to the server. <br /><br />
+
+        If your rule order is set to <tt>'allow,deny'</tt> then the system
+        applies all allow rules followed by deny rules. Access is denied by
+        default.  Any client which does not match an Allow directive or does
+        match a Deny directive will be denied access to the server.<br /><br />
+
+        If your rule order is set to 'explicit', the authentication is
+        performed in a similar fashion to rule order 'deny,allow', with the
+        added restriction that your host/username combination <b>must</b> be
+        listed in the <i>allow</i> rules, and not listed in the <i>deny</i>
+        rules. This is the <b>most</b> secure means of using Allow/Deny rules,
+        and was available in Apache by specifying allow and deny rules without
+        setting any order.<br /><br />
+
+        Please also see <a
+        href="#cfg_TrustedProxies">$cfg['TrustedProxies']</a> for detecting IP
+        address behind proxies.
+    </dd>
+    <dt id="servers_allowdeny_rules">
+        <span id="cfg_Servers_AllowDeny_rules">$cfg['Servers'][$i]['AllowDeny']['rules']</span> array of strings
+    </dt>
+    <dd>The general format for the rules is as such:
+
+        <pre>
+&lt;'allow' | 'deny'&gt; &lt;username&gt; [from] &lt;ipmask&gt;
+</pre>
+
+        If you wish to match all users, it is possible to use a <tt>'%'</tt> as
+        a wildcard in the <i>username</i> field.<br />
+        There are a few shortcuts you can use in the <i>ipmask</i> field as
+        well (please note that those containing SERVER_ADDRESS might not be
+        available on all webservers):
+        <pre>
+'all' -&gt; 0.0.0.0/0
+'localhost' -&gt; 127.0.0.1/8
+'localnetA' -&gt; SERVER_ADDRESS/8
+'localnetB' -&gt; SERVER_ADDRESS/16
+'localnetC' -&gt; SERVER_ADDRESS/24
+</pre>
+
+        Having an empty rule list is equivalent to either using
+        <tt>'allow % from all'</tt> if your rule order is set to
+        <tt>'deny,allow'</tt> or <tt>'deny % from all'</tt> if your rule order
+        is set to <tt>'allow,deny'</tt> or <tt>'explicit'</tt>.<br /><br />
+
+        For the <abbr title="Internet Protocol">IP</abbr> matching system, the
+        following work:<br />
+        <tt>xxx.xxx.xxx.xxx</tt>        (an exact <abbr title="Internet Protocol">IP</abbr> address)<br />
+        <tt>xxx.xxx.xxx.[yyy-zzz]</tt>  (an <abbr title="Internet Protocol">IP</abbr> address range)<br />
+        <tt>xxx.xxx.xxx.xxx/nn</tt>     (CIDR, Classless Inter-Domain Routing type <abbr title="Internet Protocol">IP</abbr> addresses)<br />
+        But the following does not work:<br />
+        <tt>xxx.xxx.xxx.xx[yyy-zzz]</tt> (partial
+        <abbr title="Internet Protocol">IP</abbr> address range)
+    </dd>
+    <dt><span id="cfg_Servers_SignonSession">$cfg['Servers'][$i]['SignonSession']</span> string</dt>
+    <dd>Name of session which will be used for signon authentication method.
+    </dd>
+    <dt><span id="cfg_Servers_SignonURL">$cfg['Servers'][$i]['SignonURL']</span> string</dt>
+    <dd>URL where user will be redirected to log in for signon authentication method. Should be absolute including protocol.
+    </dd>
+    <dt><span id="cfg_Servers_LogoutURL">$cfg['Servers'][$i]['LogoutURL']</span> string</dt>
+    <dd>URL where user will be redirected after logout (doesn't affect config authentication method). Should be absolute including protocol.
+    </dd>
+
+    <dt id="cfg_ServerDefault">$cfg['ServerDefault'] integer</dt>
+    <dd>If you have more than one server configured, you can set
+        <tt>$cfg['ServerDefault']</tt> to any one of them to autoconnect to
+        that server when phpMyAdmin is started, or set it to 0 to be given a
+        list of servers without logging in.<br />
+        If you have only one server configured, <tt>$cfg['ServerDefault']</tt>
+        MUST be set to that server.</dd>
+
+    <dt id="cfg_OBGzip">$cfg['OBGzip'] string/boolean</dt>
+    <dd>Defines whether to use GZip output buffering for increased
+        speed in <abbr title="HyperText Transfer Protocol">HTTP</abbr> transfers.<br />
+        Set to true/false for enabling/disabling. When set to 'auto' (string),
+        phpMyAdmin tries to enable output buffering and will automatically disable
+        it if your browser has some problems with buffering. IE6 with a certain patch
+        is known to cause data corruption when having enabled buffering.</dd>
+
+    <dt id="cfg_PersistentConnections">$cfg['PersistentConnections'] boolean</dt>
+    <dd>Whether persistent connections should be used or not (mysql_connect or
+        mysql_pconnect).</dd>
+
+    <dt id="cfg_ForceSSL">$cfg['ForceSSL'] boolean</dt>
+    <dd>Whether to force using https while accessing phpMyAdmin.</dd>
+
+    <dt id="cfg_ExecTimeLimit">$cfg['ExecTimeLimit'] integer [number of seconds]</dt>
+    <dd>Set the number of seconds a script is allowed to run. If seconds is set
+        to zero, no time limit is imposed.<br />
+        This setting is used while importing/exporting dump files but has no
+        effect when PHP is running in safe mode.</dd>
+
+    <dt id="cfg_MemoryLimit">$cfg['MemoryLimit'] integer [number of bytes]</dt>
+    <dd>Set the number of bytes a script is allowed to allocate. If number set
+        to zero, no limit is imposed.<br />
+        This setting is used while importing/exporting dump files but has no
+        effect when PHP is running in safe mode.<br />
+        You can also use any string as in php.ini, eg. '16M'.</dd>
+
+    <dt id="cfg_SkipLockedTables">$cfg['SkipLockedTables'] boolean</dt>
+    <dd>Mark used tables and make it possible to show databases with locked
+        tables (since MySQL 3.23.30).</dd>
+
+    <dt id="cfg_ShowSQL">$cfg['ShowSQL'] boolean</dt>
+    <dd>Defines whether <abbr title="structured query language">SQL</abbr> queries
+        generated by phpMyAdmin should be displayed or not.</dd>
+
+    <dt id="cfg_AllowUserDropDatabase">$cfg['AllowUserDropDatabase'] boolean</dt>
+    <dd>Defines whether normal users (non-administrator) are allowed to
+        delete their own database or not. If set as FALSE, the link &quot;Drop
+        Database&quot; will not be shown, and even a &quot;DROP DATABASE
+        mydatabase&quot; will be rejected. Quite practical for
+        <abbr title="Internet service provider">ISP</abbr>'s with many
+        customers.<br />
+        Please note that this limitation of SQL queries is not as strict as
+        when using MySQL privileges. This is due to nature of SQL queries
+        which might be quite complicated. So this choice should be viewed as
+        help to avoid accidental dropping rather than strict privilege
+        limitation.</dd>
+
+    <dt id="cfg_Confirm">$cfg['Confirm'] boolean</dt>
+    <dd>Whether a warning (&quot;Are your really sure...&quot;) should be
+        displayed when you're about to lose data.</dd>
+
+    <dt id="cfg_LoginCookieRecall">$cfg['LoginCookieRecall'] boolean</dt>
+    <dd>Define whether the previous login should be recalled or not in cookie
+        authentication mode.</dd>
+
+    <dt id="cfg_LoginCookieValidity">$cfg['LoginCookieValidity'] integer [number of seconds]</dt>
+    <dd>Define how long is login cookie valid.</dd>
+
+    <dt id="cfg_LoginCookieStore">$cfg['LoginCookieStore'] integer [number of seconds]</dt>
+    <dd>Define how long is login cookie should be stored in browser. Default 0
+        means that it will be kept for existing session. This is recommended
+        for not trusted environments.</dd>
+
+    <dt id="cfg_LoginCookieDeleteAll">$cfg['LoginCookieDeleteAll'] boolean</dt>
+    <dd>If enabled (default), logout deletes cookies for all servers,
+        otherwise only for current one. Setting this to false makes it easy to
+        forget to log out from other server, when you are using more of
+        them.</dd>
+
+    <dt id="cfg_UseDbSearch">$cfg['UseDbSearch'] boolean</dt>
+    <dd>Define whether the "search string inside database" is enabled or not.</dd>
+
+    <dt id="cfg_IgnoreMultiSubmitErrors">$cfg['IgnoreMultiSubmitErrors'] boolean</dt>
+    <dd>Define whether phpMyAdmin will continue executing a multi-query
+        statement if one of the queries fails. Default is to abort execution.</dd>
+
+    <dt id="cfg_VerboseMultiSubmit">$cfg['VerboseMultiSubmit'] boolean</dt>
+    <dd>Define whether phpMyAdmin will output the results of each query of a
+        multi-query statement embedded into the
+        <abbr title="structured query language">SQL</abbr> output as inline
+        comments. Defaults to <tt>TRUE</tt>.</dd>
+    <dt id="AllowArbitraryServer">
+        <span id="cfg_AllowArbitraryServer">$cfg['AllowArbitraryServer']</span> boolean</dt>
+    <dd>If enabled allows you to log in to arbitrary servers using cookie auth.
+        <br /><br />
+
+        <b>NOTE:</b> Please use this carefully, as this may allow users access to
+        MySQL servers behind the firewall where your
+        <abbr title="HyperText Transfer Protocol">HTTP</abbr> server is placed.
+    </dd>
+
+    <dt id="cfg_LeftFrameLight">$cfg['LeftFrameLight'] boolean</dt>
+    <dd>Defines whether to use a select-based menu and display only the current
+        tables in the left frame (smaller page). Only in Non-Lightmode you can
+        use the feature to display nested folders using
+        <a href="#cfg_LeftFrameTableSeparator" class="configrule">$cfg['LeftFrameTableSeparator']</a>
+    </dd>
+
+    <dt id="cfg_LeftFrameDBTree">$cfg['LeftFrameDBTree'] boolean</dt>
+    <dd>In light mode, defines whether to display the names of databases (in the
+        selector) using a tree, see also
+        <a href="#cfg_LeftFrameDBSeparator" class="configrule">$cfg['LeftFrameDBSeparator']</a>.
+    </dd>
+
+    <dt id="cfg_LeftFrameDBSeparator">$cfg['LeftFrameDBSeparator'] string</dt>
+    <dd>The string used to separate the parts of the database name when showing
+        them in a tree.</dd>
+
+    <dt id="cfg_LeftFrameTableSeparator">$cfg['LeftFrameTableSeparator'] string</dt>
+    <dd>Defines a string to be used to nest table spaces. Defaults to '__'.
+        This means if you have tables like 'first__second__third' this will be
+        shown as a three-level hierarchy like: first &gt; second &gt; third.
+        If set to FALSE or empty, the feature is disabled.  NOTE: You should
+        not use this separator at the beginning or end of a
+        table name or multiple times after another without any other
+        characters in between.</dd>
+
+    <dt id="cfg_LeftFrameTableLevel">$cfg['LeftFrameTableLevel'] string</dt>
+    <dd>Defines how many sublevels should be displayed when splitting
+        up tables by the above separator.</dd>
+
+    <dt id="cfg_ShowTooltip">$cfg['ShowTooltip'] boolean</dt>
+    <dd>Defines whether to display table comment as tool-tip in left frame or
+        not.</dd>
+
+    <dt id="cfg_ShowTooltipAliasDB">$cfg['ShowTooltipAliasDB'] boolean</dt>
+    <dd>If tool-tips are enabled and a DB comment is set, this will flip the
+        comment and the real name. That means that if you have a table called
+        'user0001' and add the comment 'MyName' on it, you will see the name
+        'MyName' used consequently in the left frame and the tool-tip shows
+        the real name of the DB.</dd>
+
+    <dt id="cfg_ShowTooltipAliasTB">$cfg['ShowTooltipAliasTB'] boolean/string</dt>
+    <dd>Same as <a href="#cfg_ShowTooltipAliasDB" class="configrule">$cfg['ShowTooltipAliasDB']</a>, except this works for table names.
+
+        When setting this to 'nested', the Alias of the Tablename is only used
+        to split/nest the tables according to the
+        <a href="#cfg_LeftFrameTableSeparator" class="configrule">$cfg['LeftFrameTableSeparator']</a>
+        directive. So only the folder is called like the Alias, the tablename itself
+        stays the real tablename.</dd>
+
+    <dt id="cfg_LeftDisplayLogo">$cfg['LeftDisplayLogo'] boolean</dt>
+    <dd>Defines whether or not to display the phpMyAdmin logo at the top of the left frame.
+        Defaults to <tt>TRUE</tt>.</dd>
+    <dt id="cfg_LeftLogoLink">$cfg['LeftLogoLink'] string</dt>
+    <dd>Enter URL where logo in the navigation frame will point to. 
+    For use especially with self made theme which changes this.
+    The default value for this is <tt>main.php</tt>.</dd>
+
+    <dt id="cfg_LeftLogoLinkWindow">$cfg['LeftLogoLinkWindow'] string</dt>
+    <dd>Whether to open the linked page in the main window (<tt>main</tt>)
+	or in a new one (<tt>new</tt>).</dd>
+
+    <dt id="cfg_LeftDisplayServers">$cfg['LeftDisplayServers'] boolean</dt>
+    <dd>Defines whether or not to display a server choice at the top of the left frame.
+        Defaults to FALSE.</dd>
+    <dt id="cfg_DisplayServersList">$cfg['DisplayServersList'] boolean</dt>
+    <dd>Defines whether to display this server choice as links instead of in a drop-down.
+        Defaults to FALSE (drop-down).</dd>
+    <dt id="cfg_DisplayDatabasesList">$cfg['DisplayDatabasesList'] boolean</dt>
+    <dd>Defines whether to display database choice in light navigation frame as links 
+        instead of in a drop-down. Defaults to FALSE (drop-down).</dd>
+    <dt id="cfg_ShowStats">$cfg['ShowStats'] boolean</dt>
+    <dd>Defines whether or not to display space usage and statistics about databases
+        and tables.<br />
+        Note that statistics requires at least MySQL 3.23.3 and that, at this
+        date, MySQL doesn't return such information for Berkeley DB tables.</dd>
+
+    <dt><span id="cfg_ShowServerInfo">$cfg['ShowServerInfo'] </span>boolean</dt>
+    <dd>Defines whether to display detailed server information on main page.
+        You can additionally hide more information by using 
+        <tt><a href="#cfg_Servers_verbose">$cfg['Servers'][$i]['verbose']</a></tt>.
+        </dd>
+
+    <dt><span id="cfg_ShowPhpInfo">$cfg['ShowPhpInfo'] </span>boolean<br />
+        <span id="cfg_ShowChgPassword">$cfg['ShowChgPassword'] </span>boolean<br />
+        <span id="cfg_ShowCreateDb">$cfg['ShowCreateDb'] </span>boolean
+    </dt>
+    <dd>Defines whether to display the &quot;PHP information&quot; and
+        &quot;Change password &quot; links and form for creating database or
+        not at the starting main (right) frame. This setting
+        does not check MySQL commands entered directly.<br /><br />
+
+        Please note that to block the usage of phpinfo() in scripts, you
+        have to put this in your <i>php.ini</i>:
+
+        <pre>disable_functions = phpinfo()</pre>
+
+        Also note that enabling the &quot;Change password &quot; link has no
+        effect with &quot;config&quot; authentication mode: because of the
+        hard coded password value in the configuration file, end users can't
+        be allowed to change their passwords.</dd>
+
+    <dt id="cfg_SuggestDBName">$cfg['SuggestDBName'] boolean</dt>
+    <dd>Defines whether to suggest a database name on the
+        &quot;Create Database&quot; form or to keep the textfield empty.</dd>
+
+    <dt id="cfg_ShowBlob">$cfg['ShowBlob'] boolean</dt>
+    <dd>Defines whether or not <tt>BLOB</tt> fields are shown when browsing a table's
+        content.</dd>
+
+    <dt id="cfg_NavigationBarIconic">$cfg['NavigationBarIconic'] string</dt>
+    <dd>Defines whether navigation bar buttons and the right panel top menu
+        contain text or symbols only. A value of TRUE displays icons, FALSE
+        displays text and 'both' displays both icons and text.</dd>
+
+    <dt id="cfg_ShowAll">$cfg['ShowAll'] boolean</dt>
+    <dd>Defines whether a user should be displayed a
+        &quot;show all (records)&quot; button in browse mode or not.</dd>
+
+    <dt id="cfg_MaxRows">$cfg['MaxRows'] integer</dt>
+    <dd>Number of rows displayed when browsing a result set. If the result set
+        contains more rows, &quot;Previous&quot; and &quot;Next&quot; links will be shown.</dd>
+
+    <dt id="cfg_Order">$cfg['Order'] string [<tt>DESC</tt>|<tt>ASC</tt>|<tt>SMART</tt>]</dt>
+    <dd>Defines whether fields are displayed in ascending (<tt>ASC</tt>) order,
+        in descending (<tt>DESC</tt>) order or in a &quot;smart&quot;
+        (<tt>SMART</tt>) order - I.E. descending order for fields of type TIME,
+        DATE, DATETIME and TIMESTAMP, ascending order else- by default.</dd>
+
+    <dt id="cfg_ProtectBinary">$cfg['ProtectBinary'] boolean or string</dt>
+    <dd>Defines whether <tt>BLOB</tt> or <tt>BINARY</tt> fields are protected
+        from editing when browsing a table's content. Valid values are:
+        <ul><li><tt>FALSE</tt> to allow editing of all fields;</li>
+            <li><tt>'blob'</tt> to allow editing of all fields except <tt>BLOBS</tt>;</li>
+            <li><tt>'all'</tt> to disallow editing of all <tt>BINARY</tt> or
+                <tt>BLOB</tt> fields.</li>
+        </ul>
+    </dd>
+
+    <dt id="cfg_ShowFunctionFields">$cfg['ShowFunctionFields'] boolean</dt>
+    <dd>Defines whether or not MySQL functions fields should be initially 
+        displayed in edit/insert mode. Since version 2.10, the user can
+        toggle this setting from the interface.
+    </dd>
+
+    <dt id="cfg_CharEditing">$cfg['CharEditing'] string</dt>
+    <dd>Defines which type of editing controls should be used for CHAR and
+        VARCHAR fields. Possible values are:
+        <ul><li>input - this allows to limit size of text to size of field in
+                MySQL, but has problems with newlines in fields</li>
+            <li>textarea - no problems with newlines in fields, but also no
+                length limitations</li>
+        </ul>
+        Default is old behavior so input.</dd>
+
+    <dt id="cfg_InsertRows">$cfg['InsertRows'] integer</dt>
+    <dd>Defines the maximum number of concurrent entries for the Insert page.</dd>
+
+    <dt id="cfg_ForeignKeyMaxLimit">$cfg['ForeignKeyMaxLimit'] integer</dt>
+    <dd>If there are fewer items than this in the set of foreign keys, then a
+        drop-down box of foreign keys is presented, in the style described by the
+        <a href="#cfg_ForeignKeyDropdownOrder" class="configrule">$cfg['ForeignKeyDropdownOrder']</a>
+        setting.</dd>
+
+    <dt id="cfg_ForeignKeyDropdownOrder">$cfg['ForeignKeyDropdownOrder'] array</dt>
+    <dd>For the foreign key drop-down fields, there are several methods of
+        display, offering both the key and value data. The contents of the
+        array should be one or both of the following strings:
+        <i>'content-id'</i>, <i>'id-content'</i>.</dd>
+
+    <dt><span id="cfg_ZipDump">$cfg['ZipDump'] </span>boolean<br />
+        <span id="cfg_GZipDump">$cfg['GZipDump'] </span>boolean<br />
+        <span id="cfg_BZipDump">$cfg['BZipDump'] </span>boolean
+    </dt>
+    <dd>Defines whether to allow the use of zip/GZip/BZip2 compression when
+        creating a dump file</dd>
+
+    <dt><span id="cfg_CompressOnFly">$cfg['CompressOnFly'] </span>boolean<br />
+    </dt>
+    <dd>Defines whether to allow on the fly compression for GZip/BZip2
+        compressed exports. This doesn't affect smaller dumps and allows users to
+        create larger dumps that won't otherwise fit in memory due to php
+        memory limit. Produced files contain more GZip/BZip2 headers, but all
+        normal programs handle this correctly.</dd>
+
+    <dt id="cfg_LightTabs">$cfg['LightTabs'] boolean</dt>
+    <dd>If set to <tt>TRUE</tt>, use less graphically intense tabs on the top of the
+        mainframe.</dd>
+
+    <dt id="cfg_PropertiesIconic">$cfg['PropertiesIconic'] string</dt>
+    <dd>If set to <tt>TRUE</tt>, will display icons instead of text for db and table
+        properties links (like 'Browse', 'Select', 'Insert', ...).<br /> Can be
+        set to <tt>'both'</tt> if you want icons AND text.<br />
+        When set to <tt>FALSE</tt>, will only show text.</dd>
+
+    <dt id="cfg_PropertiesNumColumns">$cfg['PropertiesNumColumns'] integer</dt>
+    <dd>How many columns will be utilized to display the tables on the
+        database property view?  Default is 1 column. When setting this to a
+        value larger than 1, the type of the database will be omitted for more
+        display space.</dd>
+
+
+    <dt id="cfg_DefaultTabServer">$cfg['DefaultTabServer'] string</dt>
+    <dd>Defines the tab displayed by default on server view. Possible
+        values: &quot;main.php&quot; (recommended for multi-user setups),
+        &quot;server_databases.php&quot;, &quot;server_status.php&quot;,
+        &quot;server_variables.php&quot;, &quot;server_privileges.php&quot;
+        or &quot;server_processlist.php&quot;.</dd>
+
+    <dt id="cfg_DefaultTabDatabase">$cfg['DefaultTabDatabase'] string</dt>
+    <dd>Defines the tab displayed by default on database view. Possible
+        values: &quot;db_structure.php&quot;,
+        &quot;db_sql.php&quot; or &quot;db_search.php&quot;.</dd>
+
+    <dt id="cfg_DefaultTabTable">$cfg['DefaultTabTable'] string</dt>
+    <dd>Defines the tab displayed by default on table view. Possible
+        values: &quot;tbl_structure.php&quot;,
+        &quot;tbl_sql.php&quot;, &quot;tbl_select.php&quot;,
+        &quot;tbl_change.php&quot; or &quot;sql.php&quot;.</dd>
+
+    <dt id="cfg_MySQLManualBase">$cfg['MySQLManualBase'] string</dt>
+    <dd>If set to an <abbr title="Uniform Resource Locator">URL</abbr> which
+        points to the MySQL documentation (type depends
+        on <a href="#cfg_MySQLManualType" class="configrule">$cfg['MySQLManualType']</a>), appropriate help links are
+        generated.<br />
+        See <a href="http://dev.mysql.com/doc/">MySQL Documentation page</a>
+        for more information about MySQL manuals and their types.</dd>
+
+    <dt id="cfg_MySQLManualType">$cfg['MySQLManualType'] string</dt>
+    <dd>Type of MySQL documentation:
+        <ul><li>viewable - &quot;viewable online&quot;, current one used on MySQL website</li>
+            <li>searchable - &quot;Searchable, with user comments&quot;</li>
+            <li>chapters - &quot;HTML, one page per chapter&quot;</li>
+            <li>big - &quot;HTML, all on one page&quot;</li>
+            <li>none - do not show documentation links</li>
+        </ul>
+    </dd>
+
+    <dt id="cfg_DefaultLang">$cfg['DefaultLang'] string</dt>
+    <dd>Defines the default language to use, if not browser-defined or
+        user-defined.<br />
+        See the <i>select_lang.lib.php</i> script to know the valid values for
+        this setting.</dd>
+
+    <dt id="cfg_DefaultConnectionCollation">$cfg['DefaultConnectionCollation'] string</dt>
+    <dd>Defines the default connection collation to use, if not
+        user-defined.<br />
+        See the <a href="http://dev.mysql.com/doc/mysql/en/charset-charsets.html">MySQL
+        documentation</a> for list of possible values.</dd>
+
+    <dt id="cfg_Lang">$cfg['Lang'] string</dt>
+    <dd>Force: always use this language (must be defined in the
+        <i>select_lang.lib.php</i> script).</dd>
+
+    <dt id="cfg_FilterLanguages">$cfg['FilterLanguages'] string</dt>
+    <dd>Limit list of available languages to those matching the given regular
+        expression. For example if you want only Czech and English, you should
+        set filter to <code>'^(cs|en)'</code>.</dd>
+
+    <dt id="cfg_DefaultCharset">$cfg['DefaultCharset'] string</dt>
+    <dd>Default character set to use for recoding of MySQL queries. This must be
+        enabled and it's described by
+        <a href="#cfg_AllowAnywhereRecoding" class="configrule">$cfg['AllowAnywhereRecoding']</a>
+        option.<br />
+        You can give here any character set which is in
+        <a href="#cfg_AvailableCharsets" class="configrule">$cfg['AvailableCharsets']</a>
+        array and this is just default choice, user can select any of them.</dd>
+
+    <dt id="cfg_AllowAnywhereRecoding">$cfg['AllowAnywhereRecoding'] boolean</dt>
+    <dd>Allow character set recoding of MySQL queries. You need recode or iconv
+        support (compiled in or module) in PHP to allow MySQL queries recoding
+        and used language file must have it enabled (by default only these
+        which are in Unicode, just to avoid losing some characters).<br /><br />
+
+        Setting this to <tt>TRUE</tt> also activates a pull-down menu
+        in the Export page, to choose the character set when exporting a file.
+    </dd>
+
+    <dt id="cfg_RecodingEngine">$cfg['RecodingEngine'] string</dt>
+    <dd>You can select here which functions will be used for character set
+        conversion. Possible values are:
+        <ul><li>auto   - automatically use available one (first is tested
+                iconv, then recode)</li>
+            <li>iconv  - use iconv or libiconv functions</li>
+            <li>recode - use recode_string function</li>
+        </ul>
+        Default is auto.</dd>
+
+    <dt id="cfg_IconvExtraParams">$cfg['IconvExtraParams'] string</dt>
+    <dd>Specify some parameters for iconv used in charset conversion. See
+        <a href="http://www.gnu.org/software/libiconv/documentation/libiconv/iconv_open.3.html">iconv
+        documentation</a> for details. By default <code>//TRANSLIT</code> is
+        used, so that invalid characters will be transliterated.</dd>
+
+    <dt id="cfg_AvailableCharsets">$cfg['AvailableCharsets'] array</dt>
+    <dd>Available character sets for MySQL conversion. You can add your own (any of
+        supported by recode/iconv) or remove these which you don't use.
+        Character sets will be shown in same order as here listed, so if you
+        frequently use some of these move them to the top.</dd>
+
+    <dt id="cfg_TrustedProxies">$cfg['TrustedProxies'] array</dt>
+    <dd>Lists proxies and HTTP headers which are trusted for <a
+        href="#servers_allowdeny_order">IP Allow/Deny</a>. This list is by
+        default empty, you need to fill in some trusted proxy servers if you
+        want to use rules for IP addresses behind proxy.<br /><br />
+
+        The following example specifies that phpMyAdmin should trust a 
+        HTTP_X_FORWARDED_FOR (<tt>X-Forwarded-For</tt>) header coming from the proxy 1.2.3.4:
+<pre>
+$cfg['TrustedProxies'] =
+     array('1.2.3.4' =&gt; 'HTTP_X_FORWARDED_FOR');
+</pre>
+        The $cfg['Servers'][$i]['AllowDeny']['rules'] directive uses the 
+        client's IP address as usual.
+    </dd>
+
+    <dt id="cfg_GD2Available">$cfg['GD2Available'] string</dt>
+    <dd>Specifies whether GD &gt;= 2 is available. If yes it can be used for
+        MIME transformations.<br />
+        Possible values are:
+        <ul><li>auto - automatically detect, this is a bit expensive
+                operation for php &lt; 4.3.0 so it is preferred to change this
+                according to your server real possibilities</li>
+            <li>yes - GD 2 functions can be used</li>
+            <li>no - GD 2 function cannot be used</li>
+        </ul>
+        Default is auto.
+    </dd>
+
+    <dt id="cfg_NaviWidth">$cfg['NaviWidth'] integer</dt>
+    <dd>Navi frame width in pixels. See <tt>themes/themename/layout.inc.php</tt>.
+    </dd>
+
+    <dt><span id="cfg_NaviBackground">$cfg['NaviBackground']</span> string [valid css code for background]<br />
+        <span id="cfg_MainBackground">$cfg['MainBackground']</span> string [valid css code for background]
+    </dt>
+    <dd>The background styles used for both the frames.
+        See <tt>themes/themename/layout.inc.php</tt>.</dd>
+
+    <dt id="cfg_NaviPointerBackground">$cfg['NaviPointerBackground'] string [valid css code for background]<br />
+        <span id="cfg_NaviPointerColor">$cfg['NaviPointerColor']</span> string [valid css color]</dt>
+    <dd>The style used for the pointer in the navi frame.
+        See <tt>themes/themename/layout.inc.php</tt>.</dd>
+
+    <dt id="cfg_LeftPointerEnable">$cfg['LeftPointerEnable'] boolean</dt>
+    <dd>A value of <tt>TRUE</tt> activates the navi pointer (when LeftFrameLight
+        is <tt>FALSE</tt>).</dd>
+
+    <dt id="cfg_Border">$cfg['Border'] integer</dt>
+    <dd>The size of a table's border. See <tt>themes/themename/layout.inc.php</tt>.
+    </dd>
+
+    <dt id="cfg_ThBackground">$cfg['ThBackground'] string [valid css code for background]<br />
+        <span id="cfg_ThColor">$cfg['ThColor']</span> string [valid css color]</dt>
+    <dd>The style used for table headers. See
+        <tt>themes/themename/layout.inc.php</tt>.</dd>
+
+    <dt id="cfg_BgcolorOne">$cfg['BgOne'] string [HTML color]</dt>
+    <dd>The color (HTML) #1 for table rows. See <tt>themes/themename/layout.inc.php</tt>.
+    </dd>
+
+    <dt id="cfg_BgcolorTwo">$cfg['BgTwo'] string [HTML color]</dt>
+    <dd>The color (HTML) #2 for table rows. See <tt>themes/themename/layout.inc.php</tt>.
+    </dd>
+
+    <dt><span id="cfg_BrowsePointerBackground">$cfg['BrowsePointerBackground'] </span>string [HTML color]<br />
+        <span id="cfg_BrowsePointerColor">$cfg['BrowsePointerColor'] </span>string [HTML color]<br />
+        <span id="cfg_BrowseMarkerBackground">$cfg['BrowseMarkerBackground'] </span>string [HTML color]<br />
+        <span id="cfg_BrowseMarkerColor">$cfg['BrowseMarkerColor'] </span>string [HTML color]
+    </dt>
+    <dd>The colors (HTML) uses for the pointer and the marker in browse mode.<br />
+        The former feature highlights the row over which your mouse is passing
+        and the latter lets you visually mark/unmark rows by clicking on
+        them.<br />
+        See <tt>themes/themename/layout.inc.php</tt>.</dd>
+
+
+    <dt id="cfg_FontFamily">$cfg['FontFamily'] string</dt>
+    <dd>You put here a valid CSS font family value, for example
+    <tt>arial, sans-serif</tt>.<br />
+        See <tt>themes/themename/layout.inc.php</tt>.</dd>
+
+    <dt id="cfg_FontFamilyFixed">$cfg['FontFamilyFixed'] string</dt>
+    <dd>You put here a valid CSS font family value, for example
+    <tt>monospace</tt>. This one is used in textarea.<br />
+        See <tt>themes/themename/layout.inc.php</tt>.</dd>
+
+    <dt id="cfg_BrowsePointerEnable">$cfg['BrowsePointerEnable'] boolean</dt>
+    <dd>Whether to activate the browse pointer or not.</dd>
+
+    <dt id="cfg_BrowseMarkerEnable">$cfg['BrowseMarkerEnable'] boolean</dt>
+    <dd>Whether to activate the browse marker or not.</dd>
+
+    <dt><span id="cfg_TextareaCols">$cfg['TextareaCols'] </span>integer<br />
+        <span id="cfg_TextareaRows">$cfg['TextareaRows'] </span>integer<br />
+        <span id="cfg_CharTextareaCols">$cfg['CharTextareaCols'] </span>integer<br />
+        <span id="cfg_CharTextareaRows">$cfg['CharTextareaRows'] </span>integer
+    </dt>
+    <dd>Number of columns and rows for the textareas.<br />
+        This value will be emphasized (*2) for <abbr title="structured query language">SQL</abbr> query textareas and (*1.25) for
+        <abbr title="structured query language">SQL</abbr> textareas inside the query window.<br />
+        The Char* values are used for CHAR and VARCHAR editing (if configured
+        via <a href="#cfg_CharEditing">$cfg['CharEditing']</a>).</dd>
+
+    <dt><span id="cfg_LongtextDoubleTextarea">$cfg['LongtextDoubleTextarea'] </span>boolean
+    </dt>
+    <dd>Defines whether textarea for LONGTEXT fields should have double size.</dd>
+
+    <dt><span id="cfg_TextareaAutoSelect">$cfg['TextareaAutoSelect'] </span>boolean
+    </dt>
+    <dd>Defines if the whole textarea of the query box will be selected on
+        click.</dd>
+    <dt id="CtrlArrowsMoving">
+        <span id="cfg_CtrlArrowsMoving">$cfg['CtrlArrowsMoving'] </span>boolean
+    </dt>
+    <dd>Enable Ctrl+Arrows (Option+Arrows in Safari) moving between fields when
+        editing.</dd>
+
+    <dt id="cfg_LimitChars">$cfg['LimitChars'] integer</dt>
+    <dd>Maximum number of characters showen in any non-numeric field on browse view.
+        Can be turned off by a toggle button on the browse page.</dd>
+
+    <dt><span id="cfg_ModifyDeleteAtLeft">$cfg['ModifyDeleteAtLeft'] </span>boolean
+        <span id="cfg_ModifyDeleteAtRight">$cfg['ModifyDeleteAtRight'] </span>boolean
+    </dt>
+    <dd>Defines the place where modify and delete links would be put when
+        tables contents are displayed (you may have them displayed both at the
+        left and at the right).
+        &quot;Left&quot; and &quot;right&quot; are parsed as &quot;top&quot;
+        and &quot;bottom&quot; with vertical display mode.</dd>
+
+    <dt id="cfg_DefaultDisplay">$cfg['DefaultDisplay'] string
+        <span id="cfg_HeaderFlipType">$cfg['HeaderFlipType'] </span>string
+    </dt>
+    <dd>There are 3 display modes: horizontal, horizontalflipped and vertical.
+        Define which one is displayed by default. The first mode displays each
+        row on a horizontal line, the second rotates the headers by 90
+        degrees, so you can use descriptive headers even though fields only
+        contain small values and still print them out. The vertical mode sorts
+        each row on a vertical lineup.<br /><br />
+
+        The HeaderFlipType can be set to 'css' or 'fake'. When using 'css'
+        the rotation of the header for horizontalflipped is done via CSS. If
+        set to 'fake' PHP does the transformation for you, but of course this
+        does not look as good as CSS.</dd>
+
+    <dt id="DefaultPropDisplay">
+        <span id="cfg_DefaultPropDisplay">$cfg['DefaultPropDisplay']</span>
+        string or integer</dt>
+    <dd>When editing/creating new columns in a table all fields normally get
+        lined up one field a line. (default: 'horizontal'). If you set this to
+        'vertical' you can have each field lined up vertically beneath each
+        other. You can save up a lot of place on the horizontal direction and
+        no longer have to scroll. If you set this to integer, editing of fewer
+        columns will appear in 'vertical' mode, while editing of more fields
+        still in 'horizontal' mode. This way you can still effectively edit
+        large number of fields, while having full view on few of them.</dd>
+
+    <dt id="cfg_ShowBrowseComments">$cfg['ShowBrowseComments'] boolean<br />
+        <span id="cfg_ShowPropertyComments">$cfg['ShowPropertyComments'] </span>boolean
+    </dt>
+    <dd>By setting the corresponding variable to <tt>TRUE</tt> you can enable the
+        display of column comments in Browse or Property display. In browse
+        mode, the comments are shown inside the header. In property mode,
+        comments are displayed using a CSS-formatted dashed-line below the
+        name of the field. The comment is shown as a tool-tip for that field.
+    </dd>
+
+    <dt id ="cfb_SQLQuery_Edit">$cfg['SQLQuery']['Edit'] boolean</dt>
+    <dd>Whether to display an edit link to change a query in any SQL Query box.</dd>
+
+    <dt id ="cfb_SQLQuery_Explain">$cfg['SQLQuery']['Explain'] boolean</dt>
+    <dd>Whether to display a link to explain a SELECT query in any SQL Query box.</dd>
+
+    <dt id ="cfb_SQLQuery_ShowAsPHP">$cfg['SQLQuery']['ShowAsPHP'] boolean</dt>
+    <dd>Whether to display a link to wrap a query in PHP code in any SQL Query box.</dd>
+
+    <dt id ="cfb_SQLQuery_Validate">$cfg['SQLQuery']['Validate'] boolean</dt>
+    <dd>Whether to display a link to validate a query in any SQL Query box.
+        See also <tt><a href="#cfg_SQLValidator">$cfg_SQLValidator</a></tt>.</dd>
+
+    <dt id ="cfb_SQLQuery_Refresh">$cfg['SQLQuery']['Refresh'] boolean</dt>
+    <dd>Whether to display a link to refresh a query in any SQL Query box.</dd>
+
+     <dt id="cfg_UploadDir">$cfg['UploadDir'] string</dt>
+     <dd>
+         The name of the directory where
+    <dt id="cfg_UploadDir">$cfg['UploadDir'] string</dt>
+    <dd>
+        The name of the directory where
+        <abbr title="structured query language">SQL</abbr> files have been
+        uploaded by other means than phpMyAdmin (for example, ftp).  Those files
+        are available under a drop-down box when you click the database name,
+        then the <abbr title="structured query language">SQL</abbr> tab.
+        <br /><br />
+
+        If you want different directory for each user, %u will be replaced
+        with username.<br /><br />
+
+        Please note that the file names must have the suffix &quot;.sql&quot;
+        (or &quot;.sql.bz2&quot; or &quot;.sql.gz&quot; if support for
+        compressed formats is enabled).<br /><br />
+
+        This feature is useful when your file is too big to be uploaded via
+        <abbr title="HyperText Transfer Protocol">HTTP</abbr>, or when file
+        uploads are disabled in PHP.<br /><br />
+
+        Please note that if PHP is running in safe mode, this directory must
+        be owned by the same user as the owner of the phpMyAdmin scripts.
+        <br /><br />
+
+        See also <a href="#faq1_16">
+        <abbr title="Frequently Asked Questions">FAQ</abbr> 1.16</a> for
+        alternatives.
+    </dd>
+
+    <dt id="cfg_SaveDir">$cfg['SaveDir'] string</dt>
+    <dd>
+        The name of the directory where dumps can be saved.<br /><br />
+
+        If you want different directory for each user, %u will be replaced
+        with username.<br /><br />
+
+        Please note that the directory has to be writable for user running
+        webserver.<br /><br />
+
+        Please note that if PHP is running in safe mode, this directory must
+        be owned by the same user as the owner of the phpMyAdmin scripts.
+    </dd>
+
+    <dt id="cfg_TempDir">$cfg['TempDir'] string</dt>
+    <dd>
+        The name of the directory where temporary files can be stored.
+        <br /><br />
+        This is needed for native MS Excel export, see
+        <a href="#faq6_23"><abbr title="Frequently Asked Questions">FAQ</abbr>
+        6.23</a>
+    </dd>
+
+    <dt id="cfg_Export">$cfg['Export'] array</dt>
+    <dd>
+        In this array are defined default parameters for export, names of
+        items are similar to texts seen on export page, so you can easily
+        identify what they mean.
+    </dd>
+
+    <dt id="cfg_Import">$cfg['Import'] array</dt>
+    <dd>
+        In this array are defined default parameters for import, names of
+        items are similar to texts seen on import page, so you can easily
+        identify what they mean.
+    </dd>
+
+    <dt id="cfg_RepeatCells">$cfg['RepeatCells'] integer</dt>
+    <dd>
+        Repeat the headers every X cells, or 0 to deactivate.
+    </dd>
+
+    <dt id="cfg_EditInWindow">$cfg['EditInWindow'] boolean<br />
+        <span id="cfg_QueryWindowWidth">$cfg['QueryWindowWidth'] </span>integer<br />
+        <span id="cfg_QueryWindowHeight">$cfg['QueryWindowHeight'] </span>integer<br />
+        <span id="cfg_QueryHistoryDB">$cfg['QueryHistoryDB'] </span>boolean<br />
+        <span id="cfg_QueryWindowDefTab">$cfg['QueryWindowDefTab'] </span>string<br />
+        <span id="cfg_QueryHistoryMax">$cfg['QueryHistoryMax'] </span>integer
+    </dt>
+    <dd>
+        All those variables affect the query window feature. A <tt><abbr title="structured query language">SQL</abbr></tt> link
+        or icon is always displayed on the left panel. If JavaScript is enabled in
+        your browser, a click on this opens a distinct query window, which is
+        a direct interface to enter <abbr title="structured query language">SQL</abbr> queries. Otherwise, the right panel
+        changes to display a query box.<br /><br />
+
+        The size of this query window can be customized with
+        <tt>$cfg['QueryWindowWidth']</tt> and <tt>$cfg['QueryWindowWidth']</tt>
+        - both integers for the size in pixels. Note that normally, those
+        parameters will be modified in <tt>layout.inc.php</tt> for the
+        theme you are using.<br /><br />
+
+        If <tt>$cfg['EditInWindow']</tt> is set to true, a click on [Edit]
+        from the results page (in the &quot;Showing Rows&quot; section)
+        opens the query window and puts the current query
+        inside it.  If set to false, clicking on the link puts the <abbr title="structured query language">SQL</abbr>
+        query in the right panel's query box.
+        <br /><br />
+        The usage of the JavaScript query window is recommended if you have a
+        JavaScript enabled browser. Basic functions are used to exchange quite
+        a few variables, so most 4th generation browsers should be capable to
+        use that feature. It currently is only tested with Internet Explorer 6
+        and Mozilla 1.x.
+        <br /><br />
+        If <tt>$cfg['QueryHistoryDB']</tt> is set to <tt>TRUE</tt>, all your Queries are logged
+        to a table, which has to be created by you (see <a
+        href="#history" class="configrule">$cfg['Servers'][$i]['history']</a>).  If set to FALSE,
+        all your queries will be appended to the form, but only as long as
+        your window is opened they remain saved.
+        <br /><br />
+        When using the JavaScript based query window, it will always get
+        updated when you click on a new table/db to browse and will focus if
+        you click on "Edit <abbr title="structured query language">SQL</abbr>" after using a query. You can suppress updating
+        the query window by checking the box "Do not overwrite this query from
+        outside the window" below the query textarea. Then you can browse
+        tables/databases in the background without losing the contents of the
+        textarea, so this is especially useful when composing a query with
+        tables you first have to look in. The checkbox will get automatically
+        checked whenever you change the contents of the textarea. Please
+        uncheck the button whenever you definitely want the query window to
+        get updated even though you have made alterations.
+        <br /><br />
+        If <tt>$cfg['QueryHistoryDB']</tt> is set to <tt>TRUE</tt> you can specify the amount of
+        saved history items using <tt>$cfg['QueryHistoryMax']</tt>.
+        <br /><br />
+        The query window also has a custom tabbed look to group the features.
+        Using the variable <tt>$cfg['QueryWindowDefTab']</tt> you can specify the
+        default tab to be used when opening the query window. It can be set to
+        either 'sql', 'files', 'history' or 'full'.</dd>
+
+    <dt id="cfg_BrowseMIME">$cfg['BrowseMIME'] boolean</dt>
+    <dd>Enable <a href="#transformations">MIME-transformations</a>.</dd>
+
+    <dt id="cfg_MaxExactCount">$cfg['MaxExactCount'] integer</dt>
+    <dd>For InnoDB tables, determines for how large tables phpMyAdmin
+                should get the exact row count using <code>SELECT COUNT</code>.
+                If the approximate row count as returned by
+                <code>SHOW TABLE STATUS</code> is smaller than this value,
+                <code>SELECT COUNT</code> will be used, otherwise the approximate
+                count will be used.
+    </dd>
+    <dt id="cfg_MaxExactCountViews">$cfg['MaxExactCountViews'] integer</dt>
+    <dd>For VIEWs, since obtaining the exact count could have an
+    impact on performance, this value is the maximum to be displayed, using
+    a <code>SELECT COUNT ... LIMIT</code>. The default value of 0 bypasses 
+    any row counting.
+    </dd>
+
+    <dt id="wysiwyg">
+        <span id="cfg_WYSIWYG-PDF">$cfg['WYSIWYG-PDF'] </span>boolean</dt>
+    <dd>Utilizes a WYSIWYG editing control to easily place elements of a
+        <abbr title="Portable Document Format">PDF</abbr>
+        page.  By clicking on the button 'toggle scratchboard' on the page
+        where you edit x/y coordinates of those elements you can activate a
+        scratchboard where all your elements are placed. By clicking on an
+        element, you can move them around in the pre-defined area and the x/y
+        coordinates will get updated dynamically. Likewise, when entering a
+        new position directly into the input field, the new position in the
+        scratchboard changes after your cursor leaves the input field.<br />
+        You have to click on the 'OK'-button below the tables to save the new
+        positions.  If you want to place a new element, first add it to the
+        table of elements and then you can drag the new element around.<br />
+        By changing the paper size and the orientation you can change the size
+        of the scratchboard as well. You can do so by just changing the
+        dropdown field below, and the scratchboard will resize automatically,
+        without interfering with the current placement of the elements.<br />
+        If ever an element gets out of range you can either enlarge the paper
+        size or click on the 'reset' button to place all elements below each
+        other.<br />
+        <b>NOTE:</b> You have to use a recent browser like IE6 or Mozilla to
+        get this control to work. The basic Drag&amp;Drop script functionality
+        was kindly borrowed from www.youngpup.net and is underlying so
+        specific license.</dd>
+
+    <dt id="cfg_NaturalOrder">$cfg['NaturalOrder'] boolean</dt>
+    <dd>Sorts database and table names according to natural order (for example,
+        t1, t2, t10). Currently implemented in the left panel (Light mode)
+        and in Database view, for the table list.</dd>
+
+    <dt id="cfg_TitleTable">$cfg['TitleTable'] string</dt>
+    <dt id="cfg_TitleDatabase">$cfg['TitleDatabase'] string</dt>
+    <dt id="cfg_TitleServer">$cfg['TitleServer'] string</dt>
+    <dt id="cfg_TitleDefault">$cfg['TitleDefault'] string</dt>
+    <dd>Allows you to specify window's title bar. Following magic string can
+        be used to get special values:
+        <dl>
+            <dt><code>@HTTP_HOST@</code></dt>
+                <dd>HTTP host that runs phpMyAdmin</dd>
+            <dt><code>@SERVER@</code></dt>
+                <dd>MySQL server name</dd>
+            <dt><code>@VERBOSE@</code></dt>
+                <dd>Verbose MySQL server name as defined in <a href="#cfg_Servers_verbose">server configuration</a></dd>
+            <dt><code>@VSERVER@</code></dt>
+                <dd>Verbose MySQL server name if set, otherwise normal</dd>
+            <dt><code>@DATABASE@</code></dt>
+                <dd>Currently opened database</dd>
+            <dt><code>@TABLE@</code></dt>
+                <dd>Currently opened table</dd>
+            <dt><code>@PHPMYADMIN@</code></dt>
+                <dd>phpMyAdmin with version</dd>
+        </dl>
+    </dd>
+
+    <dt id="cfg_ErrorIconic">$cfg['ErrorIconic'] boolean</dt>
+    <dd>Uses icons for warnings, errors and informations.</dd>
+
+    <dt id="cfg_MainPageIconic">$cfg['MainPageIconic'] boolean</dt>
+    <dd>Uses icons on main page in lists and menu tabs.</dd>
+
+    <dt id="cfg_ReplaceHelpImg">$cfg['ReplaceHelpImg'] boolean</dt>
+    <dd>Shows a help button instead of the &quot;Documentation&quot; message.
+    </dd>
+
+    <dt id="cfg_ThemePath">$cfg['ThemePath'] string</dt>
+    <dd>If theme manager is active, use this as the path of the subdirectory
+        containing all the themes.</dd>
+
+    <dt id="cfg_ThemeManager">$cfg['ThemeManager'] boolean</dt>
+    <dd>Enables user-selectable themes. See <a href="#faqthemes">
+        <abbr title="Frequently Asked Questions">FAQ</abbr> 2.7</a>.</dd>
+
+    <dt id="cfg_ThemeDefault">$cfg['ThemeDefault'] string</dt>
+    <dd>The default theme (a subdirectory under <tt>cfg['ThemePath']</tt>).</dd>
+
+    <dt id="cfg_ThemePerServer">$cfg['ThemePerServer'] boolean</dt>
+    <dd>Whether to allow different theme for each server.</dd>
+
+    <dt id="cfg_DefaultQueryTable">$cfg['DefaultQueryTable'] string<br />
+        <span id="cfg_DefaultQueryDatabase">$cfg['DefaultQueryDatabase']</span> string
+    </dt>
+    <dd>Default queries that will be displayed in query boxes when user didn't
+        specify any. Use %d for database name, %t for table name and %f for a
+        comma separated list of field names. Note that %t and %f are only
+        applicable to <tt>$cfg['DefaultQueryTable']</tt>.</dd>
+
+    <dt id="cfg_SQP_fmtType">$cfg['SQP']['fmtType'] string [<tt>html</tt>|<tt>none</tt>]</dt>
+    <dd>
+        The main use of the new <abbr title="structured query language">SQL</abbr> Parser is to pretty-print <abbr title="structured query language">SQL</abbr> queries. By
+        default we use HTML to format the query, but you can disable this by
+        setting this variable to <tt>'none'</tt>.
+    </dd>
+
+    <dt id="cfg_SQP_fmtInd">$cfg['SQP']['fmtInd'] float<br />
+        <span id="cfg_SQP">$cfg['SQP']['fmtIndUnit']</span> string [<tt>em</tt>|<tt>px</tt>|<tt>pt</tt>|<tt>ex</tt>]</dt>
+    <dd>For the pretty-printing of <abbr title="structured query language">SQL</abbr> queries, under some cases the part of a
+        query inside a bracket is indented. By changing
+        <tt>$cfg['SQP']['fmtInd']</tt> you can change the amount of this indent.
+        <br />Related in purpose is <tt>$cfg['SQP']['fmtIndUnit']</tt> which
+        specifies the units of the indent amount that you specified. This is
+        used via stylesheets.</dd>
+
+    <dt id="cfg_SQP_fmtColor">$cfg['SQP']['fmtColor'] array of string tuples</dt>
+    <dd>This array is used to define the colours for each type of element of
+        the pretty-printed <abbr title="structured query language">SQL</abbr> queries. The tuple format is<br />
+        <i>class</i> =&gt; [<i>HTML colour code</i> | <i>empty string</i>]<br />
+        If you specify an empty string for the color of a class, it is ignored
+        in creating the stylesheet.
+        You should not alter the class names, only the colour strings.<br />
+        <b>Class name key:</b>
+        <ul><li><b>comment</b> Applies to all comment sub-classes</li>
+            <li><b>comment_mysql</b> Comments as <tt>"#...\n"</tt></li>
+            <li><b>comment_ansi</b> Comments as <tt>"-- ...\n"</tt></li>
+            <li><b>comment_c</b> Comments as <tt>"/*...*/"</tt></li>
+            <li><b>digit</b> Applies to all digit sub-classes</li>
+            <li><b>digit_hex</b> Hexadecimal numbers</li>
+            <li><b>digit_integer</b> Integer numbers</li>
+            <li><b>digit_float</b> Floating point numbers</li>
+            <li><b>punct</b> Applies to all punctuation sub-classes</li>
+            <li><b>punct_bracket_open_round</b> Opening brackets<tt>"("</tt></li>
+            <li><b>punct_bracket_close_round</b> Closing brackets <tt>")"</tt></li>
+            <li><b>punct_listsep</b> List item Separator <tt>","</tt></li>
+            <li><b>punct_qualifier</b> Table/Column Qualifier <tt>"."</tt> </li>
+            <li><b>punct_queryend</b> End of query marker <tt>";"</tt></li>
+            <li><b>alpha</b> Applies to all alphabetic classes</li>
+            <li><b>alpha_columnType</b> Identifiers matching a column type</li>
+            <li><b>alpha_columnAttrib</b> Identifiers matching a database/table/column attribute</li>
+            <li><b>alpha_functionName</b> Identifiers matching a MySQL function name</li>
+            <li><b>alpha_reservedWord</b> Identifiers matching any other reserved word</li>
+            <li><b>alpha_variable</b> Identifiers matching a <abbr title="structured query language">SQL</abbr> variable <tt>"@foo"</tt></li>
+            <li><b>alpha_identifier</b> All other identifiers</li>
+            <li><b>quote</b> Applies to all quotation mark classes</li>
+            <li><b>quote_double</b> Double quotes <tt>"</tt></li>
+            <li><b>quote_single</b> Single quotes <tt>'</tt></li>
+            <li><b>quote_backtick</b> Backtick quotes <tt>`</tt></li>
+        </ul>
+    </dd>
+
+    <dt id="cfg_SQLValidator">$cfg['SQLValidator'] boolean</dt>
+    <dd><dl><dt id="cfg_SQLValidator_use">$cfg['SQLValidator']['use'] boolean</dt>
+            <dd>phpMyAdmin now supports use of the <a href="http://developer.mimer.com/validator/index.htm">Mimer <abbr title="structured query language">SQL</abbr> Validator</a> service,
+                as originally published on
+                <a  href="http://developers.slashdot.org/article.pl?sid=02/02/19/1720246">Slashdot</a>.
+                <br />
+                For help in setting up your system to use the service, see the
+                <a href="#faqsqlvalidator"><abbr title="Frequently Asked Questions">FAQ</abbr> 6.14</a>.
+            </dd>
+
+            <dt id="cfg_SQLValidator_username">$cfg['SQLValidator']['username'] string<br />
+                <span id="cfg_SQLValidator_password">$cfg['SQLValidator']['password']</span> string</dt>
+            <dd>The SOAP service allows you to log in with <tt>anonymous</tt>
+                and any password, so we use those by default. Instead, if
+                you have an account with them, you can put your login details
+                here, and it will be used in place of the anonymous login.</dd>
+        </dl>
+    </dd>
+
+    <dt id="cfg_DBG">$cfg['DBG']</dt>
+    <dd><b>DEVELOPERS ONLY!</b></dd>
+
+    <dt id="cfg_DBG_enable">$cfg['DBG']['enable'] boolean</dt>
+    <dd><b>DEVELOPERS ONLY!</b><br />
+        Enable the DBG extension for debugging phpMyAdmin. Required for profiling
+        the code.<br />
+        For help in setting up your system to this, see the
+        <a href="#developersdbg">Developers</a> section.</dd>
+
+    <dt id="cfg_DBG_profile_enable">$cfg['DBG']['profile']['enable'] boolean</dt>
+    <dd><b>DEVELOPERS ONLY!</b><br />
+        Enable profiling support for phpMyAdmin. This will append a chunk of data
+        to the end of every page displayed in the main window with profiling
+        statistics for that page.<br />
+        You may need to increase the maximum execution time for this to
+	complete successfully.<i>Profiling was removed from the code for
+	version 2.9.0 due to licensing issues.</i></dd>
+
+    <dt id="cfg_DBG_profile_threshold">$cfg['DBG']['profile']['threshold'] float (units in milliseconds)</dt>
+    <dd><b>DEVELOPERS ONLY!</b><br />
+        When profiling data is displayed, this variable controls the threshold of
+        display for any profiling data, based on the average time each time has
+        taken. If it is over the threshold it is displayed, otherwise it is not
+        displayed. This takes a value in milliseconds. In most cases you don't need
+        to edit this.</dd>
+
+    <dt id="cfg_ColumnTypes">$cfg['ColumnTypes'] array</dt>
+    <dd>All possible types of a MySQL column. In most cases you don't need to
+        edit this.</dd>
+
+    <dt id="cfg_AttributeTypes">$cfg['AttributeTypes'] array</dt>
+    <dd>Possible attributes for fields. In most cases you don't need to edit
+        this.</dd>
+
+    <dt id="cfg_Functions">$cfg['Functions'] array</dt>
+    <dd>A list of functions MySQL supports. In most cases you don't need to
+        edit this.</dd>
+
+    <dt id="cfg_RestrictColumnTypes">$cfg['RestrictColumnTypes'] array</dt>
+    <dd>Mapping of column types to meta types used for preferring displayed
+        functions. In most cases you don't need to edit this.</dd>
+
+    <dt id="cfg_RestrictFunctions">$cfg['RestrictFunctions'] array</dt>
+    <dd>Functions preferred for column meta types as defined in
+        <a href="#cfg_RestrictColumnTypes" class="configrule">$cfg['RestrictColumnTypes']</a>. In most cases you don't need
+        to edit this.</dd>
+
+    <dt id="cfg_DefaultFunctions">$cfg['DefaultFunctions'] array</dt>
+    <dd>Functions selected by default when inserting/changing row, Functions
+        are defined for meta types from
+        <a href="#cfg_RestrictColumnTypes" class="configrule">$cfg['RestrictColumnTypes']</a> and for
+        <code>first_timestamp</code>, which is used for first timestamp column
+        in table.</dd>
+
+    <dt id="cfg_NumOperators">$cfg['NumOperators'] array</dt>
+    <dd>Operators available for search operations on numeric and date fields.
+    </dd>
+
+    <dt id="cfg_TextOperators">$cfg['TextOperators'] array</dt>
+    <dd>Operators available for search operations on character fields.
+        Note that we put <code>LIKE</code> by default instead of
+        <code>LIKE %...%</code>, to avoid unintended performance problems
+        in case of huge tables.</dd>
+
+    <dt id="cfg_EnumOperators">$cfg['EnumOperators'] array</dt>
+    <dd>Operators available for search operations on enum fields.</dd>
+
+    <dt id="cfg_NullOperators">$cfg['NullOperators'] array</dt>
+    <dd>Additional operators available for search operations when the
+        field can be null.</dd>
+
+</dl>
+
+<!-- TRANSFORMATIONS -->
+<h2 id="transformations">Transformations</h2>
+
+<ol><li><a href="#transformationsintro">Introduction</a></li>
+    <li><a href="#transformationshowto">Usage</a></li>
+    <li><a href="#transformationsfiles">File structure</a></li>
+</ol>
+
+<h3 id="transformationsintro">1. Introduction</h3>
+
+<p> To enable transformations, you have to setup the <tt>column_info</tt> table
+    and the proper directives. Please see the <a href="#config">Configuration
+    section</a> on how to do so.</p>
+
+<p> You can apply different transformations to the contents of each field. The
+    transformation will take the content of each field and transform it with
+    certain rules defined in the selected transformation.</p>
+
+<p> Say you have a field 'filename' which contains a filename. Normally you would
+    see in phpMyAdmin only this filename. Using transformations you can transform
+    that filename into a HTML link, so you can click inside of the phpMyAdmin
+    structure on the field's link and will see the file displayed in a new browser
+    window. Using transformation options you can also specify strings to
+    append/prepend to a string or the format you want the output stored in.</p>
+
+<p> For a general overview of all available transformations and their options,
+    you can consult your
+    <i>&lt;www.your-host.com&gt;/&lt;your-install-dir&gt;/transformation_overview.php</i>
+    installation.</p>
+
+<p> For a tutorial on how to effectively use transformations, see our
+    <a href="http://www.phpmyadmin.net/home_page/docs.php">Link section</a> on
+    the official phpMyAdmin homepage.</p>
+
+<h3 id="transformationshowto">2. Usage</h3>
+
+<p> Go to your <i>tbl_structure.php</i> page (i.e. reached through
+    clicking on the 'Structure' link for a table). There click on
+    &quot;Change&quot; (or change icon) and there you will see three new fields at
+    the end of the line. They are called 'MIME-type', 'Browser transformation' and
+    'Transformation options'.</p>
+
+<ul><li>The field 'MIME-type' is a dropdown field. You have the options to leave that field
+        empty or to use 'auto' [this feature is not yet available]. Please note that
+        transformations are inactive as long as no MIME-type is selected.</li>
+
+    <li>The field 'Browser transformation' is a drop-down field. You can choose from a
+        hopefully growing amount of pre-defined transformations. See below for information on
+        how to build your own transformation.<br />
+
+        There are global transformations and mimetype-bound transformations. Global transformations
+        can be used for any mimetype. They will take the mimetype, if necessary, into regard.
+        Mimetype-bound transformations usually only operate on a certain mimetype. There are
+        transformations which operate on the main mimetype (like 'image'), which will most likely
+        take the subtype into regard, and those who only operate on a
+        specific subtype (like 'image/jpeg').<br />
+
+        You can use transformations on mimetypes for which the function was not defined for. There
+        is no security check for you selected the right transformation, so take care of what the
+        output will be like.</li>
+
+    <li>The field 'Transformation options' is a free-type textfield. You have to enter
+        transform-function specific options here. Usually the transforms can operate with default
+        options, but it is generally a good idea to look up the overview to see which options are
+        necessary.<br />
+
+        Much like the ENUM/SET-Fields, you have to split up several options using the format
+        'a','b','c',...(NOTE THE MISSING BLANKS). This is because internally the options will be
+        parsed as an array, leaving the first value the first element in the array, and so
+        forth.<br />
+
+        If you want to specify a MIME character set you can define it in the transformation_options.
+        You have to put that outside of the pre-defined options of the specific mime-transform,
+        as the last value of the set. Use the format "'; charset=XXX'". If you use a transform,
+        for which you can specify 2 options and you want to append a character set, enter "'first
+        parameter','second parameter','charset=us-ascii'". You can, however use the defaults for
+        the parameters: "'','','charset=us-ascii'".</li>
+</ul>
+
+<h3 id="transformationsfiles">3. File structure</h3>
+
+<p> All mimetypes and their transformations are defined through single files in
+    the directory 'libraries/transformations/'.</p>
+
+<p> They are stored in files to ease up customization and easy adding of new
+    transformations.</p>
+
+<p> Because the user cannot enter own mimetypes, it is kept sure that transformations
+    always work. It makes no sense to apply a transformation to a mimetype, the
+    transform-function doesn't know to handle.</p>
+
+<p> One can, however, use empty mime-types and global transformations which should work
+    for many mimetypes. You can also use transforms on a different mimetype they where built
+    for, but pay attention to option usage as well as what the transformation does to your
+    field.</p>
+
+<p> There is a basic file called '<i>global.inc.php</i>'. This function can be included by
+    any other transform function and provides some basic functions.</p>
+
+<p> There are 5 possible file names:</p>
+
+<ol><li>A mimetype+subtype transform:<br /><br />
+
+        <tt>[mimetype]_[subtype]__[transform].inc.php</tt><br /><br />
+
+        Please not that mimetype and subtype are separated via '_', which shall
+        not be contained in their names. The transform function/filename may
+        contain only characters which cause no problems in the file system as
+        well as the PHP function naming convention.<br /><br />
+
+        The transform function will the be called
+        '<tt>PMA_transform_[mimetype]_[subtype]__[transform]()</tt>'.<br /><br />
+
+        <b>Example:</b><br /><br />
+
+        <tt>text_html__formatted.inc.php</tt><br />
+        <tt>PMA_transform_text_html__formatted()</tt></li>
+
+    <li>A mimetype (w/o subtype) transform:<br /><br />
+
+        <tt>[mimetype]__[transform].inc.php</tt><br /><br />
+
+        Please note that there are no single '_' characters.
+        The transform function/filename may contain only characters which cause
+        no problems in the file system as well as the PHP function naming
+        convention.<br /><br />
+
+        The transform function will the be called
+        '<tt>PMA_transform_[mimetype]__[transform]()</tt>'.<br /><br />
+
+        <b>Example:</b><br /><br />
+
+        <tt>text__formatted.inc.php</tt><br />
+        <tt>PMA_transform_text__formatted()</tt></li>
+
+    <li>A mimetype+subtype without specific transform function<br /><br />
+
+        <tt>[mimetype]_[subtype].inc.php</tt><br /><br />
+
+        Please note that there are no '__' characters in the filename. Do not
+        use special characters in the filename causing problems with the file
+        system.<br /><br />
+
+        No transformation function is defined in the file itself.<br /><br />
+
+        <b>Example:</b><br /><br />
+
+        <tt>text_plain.inc.php</tt><br />
+        (No function)</li>
+
+    <li>A mimetype (w/o subtype) without specific transform function<br /><br />
+
+        <tt>[mimetype].inc.php</tt><br /><br />
+
+        Please note that there are no '_' characters in the filename. Do not use
+        special characters in the filename causing problems with the file system.
+        <br /><br />
+
+        No transformation function is defined in the file itself.<br /><br />
+
+        <b>Example:</b><br /><br />
+
+        <tt>text.inc.php</tt><br />
+        (No function)</li>
+
+    <li>A global transform function with no specific mimetype<br /><br />
+
+        <tt>global__[transform].inc.php</tt><br /><br />
+
+        The transform function will the be called
+        '<tt>PMA_transform_global__[transform]()</tt>'.<br /><br />
+
+        <b>Example:</b><br /><br />
+
+        <tt>global__formatted</tt><br />
+        <tt>PMA_transform_global__formatted()</tt></li>
+</ol>
+
+<p> So generally use '_' to split up mimetype and subtype, and '__' to provide a
+    transform function.</p>
+
+<p> All filenames containing no '__' in themselves are not shown as valid transform
+    functions in the dropdown.</p>
+
+<p> Please see the libraries/transformations/TEMPLATE file for adding your own transform
+    function. See the libraries/transformations/TEMPLATE_MIMETYPE for adding a mimetype
+    without a transform function. Also note the introduction of a function description in
+    the language files. For each function a $strTransformation_[filename without .inc.php]
+    has to exist.</p>
+
+<p> You can use the template generator to generate new functions and entries in the
+    language file.</p>
+
+<p> To create a new transform function please see
+    <tt>libraries/transformations/template_generator.sh</tt>.
+    To create a new, empty mimetype please see
+    <tt>libraries/transformations/template_generator_mimetype.sh</tt>.</p>
+
+<p> A transform function always gets passed three variables:</p>
+
+<ol><li><b>$buffer</b> - Contains the text inside of the column. This is the text,
+        you want to transform.</li>
+    <li><b>$options</b> - Contains any user-passed options to a transform function
+        as an array.</li>
+    <li><b>$meta</b> - Contains an object with field information to your column.
+        The data is drawn from the output of the
+        <a href="http://www.php.net/mysql_fetch_field">mysql_fetch_field()</a>
+        function. This means, all object properties described on the
+        <a href="http://www.php.net/mysql_fetch_field">manual page</a> are
+        available in this variable and can be used to transform a field accordingly
+        to unsigned/zerofill/not_null/... properties.<br />
+        The $meta-&gt;mimetype variable contains the original MIME-type of the
+        field (i.e. 'text/plain', 'image/jpeg' etc.)</li>
+</ol>
+
+<!-- FAQ -->
+<h2 id="faq">FAQ - Frequently Asked Questions</h2>
+
+<ol><li><a href="#faqserver">Server</a></li>
+    <li><a href="#faqconfig">Configuration</a></li>
+    <li><a href="#faqlimitations">Known limitations</a></li>
+    <li><a href="#faqmultiuser">ISPs, multi-user installations</a></li>
+    <li><a href="#faqbrowsers">Browsers or client <abbr title="operating system">OS</abbr></a></li>
+    <li><a href="#faqusing">Using phpMyAdmin</a></li>
+    <li><a href="#faqproject">phpMyAdmin project</a></li>
+    <li><a href="#faqsecurity">Security</a></li>
+</ol>
+
+<p> Please have a look at our
+    <a href="http://www.phpmyadmin.net/home_page/docs.php">Link section</a> on
+    the official phpMyAdmin homepage for in-depth coverage of phpMyAdmin's
+    features and or interface.</p>
+
+<h3 id="faqserver">Server</h3>
+
+<h4 id="faq1_1">
+    <a href="#faq1_1">1.1 I'm running PHP 4+ and my server is crashing each time a specific
+    action is required or phpMyAdmin sends a blank page or a page full of
+    cryptic characters to my browser, what can I do?</a></h4>
+
+<p> There are some known PHP bugs with output buffering and compression.<br />
+    Try to set the <a href="#cfg_OBGzip" class="configrule">$cfg['OBGzip']</a>
+    directive to <tt>FALSE</tt> in your <i>config.inc.php</i> file and the
+    <tt>zlib.output_compression</tt> directive to <tt>Off</tt> in your php
+    configuration file.<br />
+    Furthermore, we know about such problems connected to the release
+    candidates of PHP 4.2.0 (tested with PHP 4.2.0 RC1 to RC4) together with
+    MS Internet Explorer. Please upgrade to the release version PHP 4.2.0.</p>
+
+<h4 id="faq1_2">
+    <a href="#faq1_2">1.2 My Apache server crashes when using phpMyAdmin.</a></h4>
+
+<p> You should first try the latest versions of Apache (and possibly MySQL).<br />
+    See also the
+    <a href="#faq1_1"><abbr title="Frequently Asked Questions">FAQ</abbr> 1.1</a>
+    entry about PHP bugs with output buffering.<br />
+    If your server keeps crashing, please ask for help in the various Apache
+    support groups.</p>
+
+<h4 id="faq1_3">
+    <a href="#faq1_3">1.3 I'm running phpMyAdmin with "cookie" authentication
+    mode under PHP 4.2.0 or 4.2.1 loaded as an Apache 2 module but can't enter the
+    script: I'm always displayed the login screen.</a></h4>
+
+<p> This is a known PHP bug (see this
+    <a href="http://bugs.php.net/bug.php?id=16626">bug report</a>) from the
+    official PHP bug database. It means there is and won't be any phpMyAdmin
+    fix against it because there is no way to code a fix.</p>
+
+<h4 id="faq1_4">
+    <a href="#faq1_4">1.4 Using phpMyAdmin on
+    <abbr title="Internet Information Services">IIS</abbr>, I'm displayed the
+    error message: &quot;The specified <abbr title="Common Gateway Interface">CGI</abbr>
+    application misbehaved by not returning a complete set of
+    <abbr title="HyperText Transfer Protocol">HTTP</abbr> headers ...&quot;.</a>
+</h4>
+
+<p> You just forgot to read the <i>install.txt</i> file from the php distribution.
+    Have a look at the last message in this
+    <a href="http://bugs.php.net/bug.php?id=12061">bug report</a> from the
+    official PHP bug database.</p>
+
+<h4 id="faq1_5">
+    <a href="#faq1_5">1.5 Using phpMyAdmin on
+    <abbr title="Internet Information Services">IIS</abbr>, I'm facing crashes
+    and/or many error messages with the
+    <abbr title="HyperText Transfer Protocol">HTTP</abbr> or advanced authentication
+    mode.</a></h4>
+
+<p> This is a known problem with the PHP
+    <abbr title="Internet Server Application Programming Interface">ISAPI</abbr>
+    filter: it's not so stable. Please use instead the cookie authentication mode.
+</p>
+
+<h4 id="faq1_6">
+    <a href="#faq1_6">1.6 I can't use phpMyAdmin on PWS: nothing is displayed!</a></h4>
+
+<p> This seems to be a PWS bug. Filippo Simoncini found a workaround (at this
+    time there is no better fix): remove or comment the <tt>DOCTYPE</tt>
+    declarations (2 lines) from the scripts <i>libraries/header.inc.php</i>,
+    <i>libraries/header_printview.inc.php</i>, <i>index.php</i>,
+    <i>navigation.php</i> and <i>libraries/common.lib.php</i>.</p>
+
+<h4 id="faq1_7">
+    <a href="#faq1_7">1.7 How can I GZip or Bzip a dump or a
+    <abbr title="comma seperated values">CSV</abbr> export? It does not seem to
+    work.</a></h4>
+
+<p> These features are based on the <tt>gzencode()</tt> and <tt>bzcompress()</tt>
+    PHP functions to be more independent of the platform (Unix/Windows, Safe Mode
+    or not, and so on). So, you must have PHP4&nbsp;>=&nbsp;4.0.4 and Zlib/Bzip2
+    support (<tt>--with-zlib</tt> and <tt>--with-bz2</tt>).<br />
+    We faced PHP crashes when trying to download a dump with MS Internet
+    Explorer when phpMyAdmin is run with a release candidate of PHP 4.2.0. In
+    this case you should switch to the release version of PHP 4.2.0.</p>
+
+<h4 id="faq1_8">
+    <a href="#faq1_8">1.8 I cannot insert a text file in a table, and I get
+    an error about safe mode being in effect.</a></h4>
+
+<p> Your uploaded file is saved by PHP in the &quot;upload dir&quot;, as
+    defined in <i>php.ini</i> by the variable <tt>upload_tmp_dir</tt> (usually
+    the system default is <i>/tmp</i>).<br />
+    We recommend the following setup for Apache servers running in safe mode,
+    to enable uploads of files while being reasonably secure:</p>
+
+<ul><li>create a separate directory for uploads: <tt>mkdir /tmp/php</tt></li>
+    <li>give ownership to the Apache server's user.group:
+        <tt>chown apache.apache /tmp/php</tt></li>
+    <li>give proper permission: <tt>chmod 600 /tmp/php</tt></li>
+    <li>put <tt>upload_tmp_dir = /tmp/php</tt> in <i>php.ini</i></li>
+    <li>restart Apache</li>
+</ul>
+
+<h4 id="faq1_9">
+    <a href="#faq1_9">1.9 I'm having troubles when uploading files. In
+    general file uploads don't work on my system and uploaded files have a
+    <tt>Content-Type:</tt> header in the first line.</a></h4>
+
+<p> It's not really phpMyAdmin related but RedHat 7.0. You have a RedHat 7.0
+    and you updated your PHP RPM to php-4.0.4pl1-3.i386.rpm, didn't you?<br />
+    So the problem is that this package has a serious bug that was corrected
+    ages ago in PHP (2001-01-28: see
+    <a href="http://www.php.net/bugs.php?id=8966">PHP's bug tracking system</a>
+    for more details). The problem is that the bugged package is still
+    available though it was corrected (see
+    <a href="http://bugzilla.redhat.com/bugzilla/show_bug.cgi?id=24933">RedHat's BugZilla</a>
+    for more details).<br />
+    So please download
+    <a href="http://www.redhat.com/swr/i386/php-4.0.4pl1-9.i386.html">the fixed package (4.0.4pl1-9)</a>
+    and the problem should go away.<br />
+    And that fixes the \r\n problem with file uploads!</p>
+
+<h4 id="faq1_10">
+    <a href="#faq1_10">1.10 I'm having troubles when uploading files with
+    phpMyAdmin running on a secure server. My browser is Internet Explorer and
+    I'm using the Apache server.</a></h4>
+
+<p> As suggested by &quot;Rob M&quot; in the phpWizard forum, add this line to
+    your <i>httpd.conf</i>:</p>
+
+    <pre>SetEnvIf User-Agent ".*MSIE.*" nokeepalive ssl-unclean-shutdown</pre>
+
+<p> It seems to clear up many problems between Internet Explorer and SSL.</p>
+
+<h4 id="faq1_11">
+    <a href="#faq1_11">1.11 I get an 'open_basedir restriction' while
+    uploading a file from the query box.</a></h4>
+
+<p> Since version 2.2.4, phpMyAdmin supports servers with open_basedir
+    restrictions. Assuming that the restriction allows you to open files in the
+    current directory ('.'), all you have to do is create a 'tmp' directory
+    under the phpMyAdmin install directory, with permissions 777 and the same
+    owner as the owner of your phpMyAdmin directory. The  uploaded files will
+    be moved there, and after execution of your
+    <abbr title="structured query language">SQL</abbr> commands, removed.</p>
+
+<h4 id="faq1_12">
+    <a href="#faq1_12">1.12 I have lost my MySQL root password, what can I do?</a></h4>
+
+<p> The MySQL manual explains how to
+    <a href="http://www.mysql.com/doc/R/e/Resetting_permissions.html">
+    reset the permissions</a>.</p>
+
+<h4 id="faq1_13">
+    <a href="#faq1_13">1.13 I get an error 'No
+    <abbr title="structured query language">SQL</abbr> query' when trying to
+    execute a bookmark.</a></h4>
+
+<p> If PHP does not have read/write access to its <tt>upload_tmp_dir</tt>, it
+    cannot access the uploaded query.</p>
+
+<h4 id="faq1_14">
+    <a href="#faq1_14">1.14 I get an error 'No
+    <abbr title="structured query language">SQL</abbr> query' when trying to
+    submit a query from the convenient text area.</a></h4>
+
+<p> Check the <tt>post_max_size</tt> directive from your PHP configuration file
+    and try to increase it.</p>
+
+<h4 id="faq1_15">
+    <a href="#faq1_15">1.15 I have problems with <i>mysql.user</i> field names.</a>
+</h4>
+
+<p> In older MySQL versions, the <tt>User</tt> and <tt>Password</tt> fields
+    were named <tt>user</tt> and <tt>password</tt>. Please modify your field
+    names to align with current standards.</p>
+
+<h4 id="faq1_16">
+    <a href="#faq1_16">1.16 I cannot upload big dump files (memory,
+    <abbr title="HyperText Transfer Protocol">HTTP</abbr> or timeout problems).</a>
+</h4>
+
+<p> Starting with version 2.7.0, the import engine has been re&#8211;written and these
+    problems should not occur. If possible, upgrade your phpMyAdmin to the latest version
+    to take advantage of the new import features.</p>
+
+<p> The first things to check (or ask your host provider to check) are the
+    values of <tt>upload_max_filesize</tt>, <tt>memory_limit</tt> and
+    <tt>post_max_size</tt> in the <i>php.ini</i> configuration file.
+    All of these three settings limit the maximum size of data that can be
+    submitted and handled by PHP. One user also said that post_max_size
+    and memory_limit need to be larger than upload_max_filesize.<br /> <br />
+
+    There exist several workarounds if your upload is too big or your
+    hosting provider is unwilling to change the settings:</p>
+
+<ul><li>Look at the <a href="#cfg_UploadDir" class="configrule">$cfg['UploadDir']</a>
+        feature. This allows one to
+        upload a file to the server via scp, ftp, or your favorite file transfer
+        method. PhpMyAdmin is then able to import the files from the temporary
+        directory. More information is available in the <a href="#config">Configuration
+        section</a> of this document.</li>
+    <li>Using a utility (such as <a href="http://www.ozerov.de/bigdump.php">
+        BigDump</a>) to split the files before uploading. We cannot support this
+        or any third party applications, but are aware of users having success
+        with it.</li>
+    <li>If you have shell (command line) access, use MySQL to import the files
+        directly. You can do this by issuing the &quot;source&quot; command from
+        within MySQL: <tt>source <i>filename.sql</i></tt>.</li>
+</ul>
+
+<h4 id="faq1_17">
+    <a id="faqmysqlversions" href="#faq1_17">1.17 Which MySQL versions does phpMyAdmin
+    support?</a></h4>
+
+<p> All MySQL versions from 3.23.32 till 5.0 (except for 4.1.0 and 4.1.1) are
+    fully supported. Please note that the older your MySQL version is, the more
+    limitations you will have to face.<br />
+    phpMyAdmin may connect to your MySQL server using php's classic
+    <a href="http://php.net/mysql">MySQL extension</a> as well as the
+    <a href="http://php.net/mysqli">improved MySQL extension (MySQLi)</a> that
+    is available in php 5.0.<br />
+    Either way, the developers of both extensions recommend to use the classic
+    extension for MySQL 4.0 and below and MySQLi for MySQL 4.1 and newer.<br />
+    When compiling php, we strongly recommend that you manually link the MySQL
+    extension of your choice to a MySQL client library of at least the same
+    minor version since the one that is bundled with some php distributions is
+    rather old and might cause problems <a href="#faq1_17a">
+       (see <abbr title="Frequently Asked Questions">FAQ</abbr> 1.17a)</a>.
+    If your webserver is running on a windows system, you might want to try
+    MySQL's
+    <a href="http://dev.mysql.com/downloads/connector/php/">Connector/PHP</a>
+    instead of the MySQL / MySQLi extensions that are bundled with the official
+    php Win32 builds.
+    <br />
+    MySQL&nbsp;5.1 is not yet supported.</p>
+
+<h5 id="faq1_17a">
+	<a href="#faq1_17a">1.17a I cannot connect to the MySQL server. It always returns the error
+    message, &quot;Client does not support authentication protocol requested
+    by server; consider upgrading MySQL client&quot;</a></h5>
+
+<p> You tried to access MySQL with an old MySQL client library. The version of
+    your MySQL client library can be checked in your phpinfo() output.
+    In general, it should have at least the same minor version as your server
+    - as mentioned in <a href="#faq1_17">
+    <abbr title="Frequently Asked Questions">FAQ</abbr> 1.17</a>.<br /><br />
+
+    This problem is generally caused by using MySQL version 4.1 or newer. MySQL
+    cha

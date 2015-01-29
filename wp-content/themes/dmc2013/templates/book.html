@@ -1,0 +1,95 @@
+			<section id="main" class="book expanded">
+				<div class="wrapper">
+					<ul class="breadcrumb">
+						<li><a href="/">Home</a> <span class="divider">/</span></li>
+						<li><a href="/#/books">Books</a> <span class="divider">/</span></li>
+						<li class="active">{{book.title}}</li>
+					</ul>
+					<h2>
+						<span ng-bind-html-unsafe="book.title"></span>
+						<span class="comingsoon" ng-show="book.comingsoon==1">&ndash; Coming soon</span>
+					</h2>
+					<div class="row-fluid">
+						<div class="span5">
+							<img  ng-hide="!book.featuredimage.length" src="{{book.featuredimage}}" alt="{{book.title}} cover shot">
+							<img  ng-show="!book.featuredimage.length" src="/wp-content/themes/dmc2013/images/comingsoon_book.png" alt="">
+							<table class="table table-hover table-bordered book-detail-table">
+								<tr>
+									<td>Publisher</td>
+									<td>{{book.publisher}}</td>
+								</tr>
+								<tr>
+									<td>Published Date</td>
+									<td>{{book.publisheddate}}</td>
+								</tr>
+								<tr ng-hide="!book.link.length">
+									<td colspan="2">
+										<a href="{{book.link}}" class="btn btn-primary" title="{{book.linktitle}}"><span class="icon icon-shopping-cart"></span> buy</a>
+									</td>
+								</tr>
+							</table>
+						</div>
+						<div class="span7">
+							<div class="content">
+								<div class="summary">{{book.shortdescription}}</div>
+								{{book.content}}
+								<div class="related" ng-hide="!book.relatedcontent.length">
+									<div ng-bind-html-unsafe="book.relatedcontent"></div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</section>
+
+			<div class="nav">
+				
+			<section id="books" data-ng-animate="'fade'">
+			
+				<a href="/#/books" class="section-toggle books" title="Browse the books I've written or contributed to">
+				
+					<h2>Books</h2>
+
+					<div class="circle"><i class="icon icon-book"></i></div>
+
+				</a>
+			
+			</section><!--
+
+		8--><section id="tv" data-ng-animate="'fade'">
+			
+				<a href="/#/tv/40" class="section-toggle television" title="Watch the TV programmes I've appeared in">
+				
+					<h2>Television</h2>
+
+					<div class="circle"><i class="icon icon-desktop"></i></div>
+
+				</a>
+
+			</section><!--
+
+		8--><section id="apps" data-ng-animate="'fade'">
+			
+				<a href="/#/app/63" class="section-toggle apps" title="Find out about the apps I've created or contributed to">
+				
+					<h2>Apps</h2>
+
+					<div class="circle"><i class="icon icon-mobile-phone"></i></div>
+
+				</a>
+
+			</section><!--
+		
+		8--><section id="articles" data-ng-animate="'fade'">
+			
+				<a href="/#/articles" class="section-toggle articles" title="Browse the articles I've written">
+				
+					<h2>Articles</h2>
+
+					<div class="circle"><i class="icon icon-file-alt"></i></div>
+
+				</a>
+
+			</section>
+
+			</div>

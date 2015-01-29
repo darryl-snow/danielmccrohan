@@ -1,0 +1,120 @@
+<ul><li ng-repeat="app in apps"><a href="/#/app/{{app.id}}" ng-bind-html-unsafe="app.title"></a></li></ul>
+
+			<section id="main" class="app expanded">
+				<div class="wrapper">
+					<ul class="breadcrumb">
+						<li><a href="/">Home</a> <span class="divider">/</span></li>
+						<li><a href="/#/apps">Apps</a> <span class="divider">/</span></li>
+						<li class="active">{{app.title}}</li>
+					</ul>
+					<h2>{{app.title}}</h2>
+					<div class="row-fluid">
+						<div class="span5">
+							<img src="{{app.featuredimage}}" alt="{{app.title}} screenshot" ng-cloak>
+							<!--
+							<div id="screenshots" class="carousel slide">
+								<ol class="carousel-indicators">
+									<li data-target="#screenshots" data-slide-to="0" class="active"></li>
+									<li data-target="#screenshots" data-slide-to="1"></li>
+									<li data-target="#screenshots" data-slide-to="2"></li>
+								</ol>
+								<div class="carousel-inner">
+									<div class="active item">
+										<img src="images/boab1.jpg" alt="Beijing on a budget screenshot">
+									</div>
+									<div class="item">
+										<img src="images/boab2.jpg" alt="Beijing on a budget screenshot">
+									</div>
+									<div class="item">
+										<img src="images/boab3.jpg" alt="Beijing on a budget screenshot">
+									</div>
+								</div>
+								<a class="carousel-control left" href="#screenshots" data-slide="prev">&lsaquo;</a>
+								<a class="carousel-control right" href="#screenshots" data-slide="next">&rsaquo;</a>
+							</div>
+							-->
+						</div>
+						<div class="span7">
+							<div class="row-fluid buy-links">
+								<a href="{{app.ios}}" class="btn btn-primary itunes" title="Buy for iOS"><span class="icon icon-shopping-cart"></span> buy for iOS</a>
+								<a href="{{app.android}}" class="btn btn-primary android" title="Buy for Android"><span class="icon icon-shopping-cart"></span> buy for Android</a>
+							</div>
+							<div class="content">
+								<div ng-bind-html-unsafe="app.content"></div>
+								<div class="related" ng-hide="!app.relatedcontent.length">
+									<div ng-bind-html-unsafe="app.relatedcontent"></div>
+								</div>
+								<div class="reviews">
+									<h4>Reviews</h4>
+									<ul>
+										<li class="review" ng-repeat="review in reviews | reverse">
+											<h5>{{review.reviewer}}, <i>{{review.country}}</i></h5>
+											<span class="rating">
+												<span class="icon icon-star" ng-repeat="n in [] | range:review.rating"></span>
+											</span>
+											<p class="review-title" ng-bind-html-unsafe="review.title"></p>
+											<p>{{review.content}}</p>
+										</li>
+									</ul>
+									<a href="{{app.ios}}">More reviews on the iTunes app store</a>
+								</div>
+							<div class="row-fluid buy-links">
+								<a href="{{app.ios}}" class="btn btn-primary itunes" title="Buy for iOS"><span class="icon icon-shopping-cart"></span> buy for iOS</a>
+								<a href="{{app.android}}" class="btn btn-primary android" title="Buy for Android"><span class="icon icon-shopping-cart"></span> buy for Android</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</section>
+
+			<div class="nav">
+				
+			<section id="books" data-ng-animate="'fade'">
+			
+				<a href="/#/books" class="section-toggle books" title="Browse the books I've written or contributed to">
+				
+					<h2>Books</h2>
+
+					<div class="circle"><i class="icon icon-book"></i></div>
+
+				</a>
+			
+			</section><!--
+
+		8--><section id="tv" data-ng-animate="'fade'">
+			
+				<a href="/#/tv/40" class="section-toggle television" title="Watch the TV programmes I've appeared in">
+				
+					<h2>Television</h2>
+
+					<div class="circle"><i class="icon icon-desktop"></i></div>
+
+				</a>
+
+			</section><!--
+
+		8--><section id="apps" data-ng-animate="'fade'">
+			
+				<a href="/#/app/63" class="section-toggle apps" title="Find out about the apps I've created or contributed to">
+				
+					<h2>Apps</h2>
+
+					<div class="circle"><i class="icon icon-mobile-phone"></i></div>
+
+				</a>
+
+			</section><!--
+		
+		8--><section id="articles" data-ng-animate="'fade'">
+			
+				<a href="/#/articles" class="section-toggle articles" title="Browse the articles I've written">
+				
+					<h2>Articles</h2>
+
+					<div class="circle"><i class="icon icon-file-alt"></i></div>
+
+				</a>
+
+			</section>
+
+			</div>

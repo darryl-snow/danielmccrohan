@@ -1,0 +1,1 @@
+[26-Apr-2013 21:43:50] PHP Fatal error:  require() [<a href='function.require'>function.require</a>]: Failed opening required 'ABSPATHWPINC/option.php' (include_path='.:/usr/lib64/php:/usr/lib/php:/usr/share/pear') in /home5/danielu4/public_html/wp-includes/functions.php on line 8

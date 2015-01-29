@@ -1,0 +1,75 @@
+
+			<div class="latestbook">
+				<div class="wrapper">
+					
+					<h2>Latest Book: <span ng-bind-html-unsafe="latestbook.title"></span></h2>
+					<div class="video-button" ng-show="latestbook.hasvideo==1"><i class="icon icon-play-circle"></i> with on-the-road video!</div>
+							
+					<img  ng-hide="!latestbook.featuredimage.length" src="{{latestbook.featuredimage}}" alt="{{latestbook.title}} cover shot">
+					<img  ng-show="!latestbook.featuredimage.length" src="/wp-content/themes/dmc2013/images/comingsoon_book.png" alt="">
+							
+					<p>{{latestbook.content}}</p>
+
+					<a href="/#/book/{{latestbook.id}}" class="btn btn-primary"><span class="icon icon-info-sign"></span> more info</a>
+
+				</div>
+			</div>
+
+			<section id="promo" ng-repeat="promo in promos">
+
+				<div class="wrapper">
+			
+					<h3>{{promo.title}}</h3>
+					<a href="{{promo.link}}" class="btn btn-large btn-primary pull-right" title="Find out more about {{promo.title}}"><span class="icon icon-info-sign"></span> Find out more</a>
+
+				</div>
+
+			</section>
+
+			<section id="books" data-ng-animate="'fade'">
+			
+				<a href="/#/books" class="section-toggle books" title="Browse the books I've written or contributed to">
+				
+					<h2>Books</h2>
+
+					<div class="circle"><i class="icon icon-book"></i></div>
+
+				</a>
+			
+			</section><!--
+
+		8--><section id="tv" data-ng-animate="'fade'">
+			
+				<a href="/#/tv/40" class="section-toggle television" title="Watch the TV programmes I've appeared in">
+				
+					<h2>Television</h2>
+
+					<div class="circle"><i class="icon icon-desktop"></i></div>
+
+				</a>
+
+			</section><!--
+
+		8--><section id="apps" data-ng-animate="'fade'">
+			
+				<a href="/#/app/63" class="section-toggle apps" title="Find out about the apps I've created or contributed to">
+				
+					<h2>Apps</h2>
+
+					<div class="circle"><i class="icon icon-mobile-phone"></i></div>
+
+				</a>
+
+			</section><!--
+		
+		8--><section id="articles" data-ng-animate="'fade'">
+			
+				<a href="/#/articles" class="section-toggle articles" title="Browse the articles I've written">
+				
+					<h2>Articles</h2>
+
+					<div class="circle"><i class="icon icon-file-alt"></i></div>
+
+				</a>
+
+			</section>

@@ -1,0 +1,291 @@
+@import "bootstrap";
+@import "bootstrap-responsive";
+@import "compass/css3";
+@import "imports/_font-awesome";
+@import "imports/_typography";
+@import "imports/_override-bootstrap";
+@import "imports/_variables";
+@import "imports/_buttons";
+@import "imports/_home";
+@import "imports/_subpage";
+@import "imports/_bxslider";
+
+body {
+	color: 						#666;
+	-webkit-font-smoothing: 	antialiased;
+
+	@media (max-width: 767px) {
+		padding-left: 			0;
+		padding-right: 			0;
+	}
+}
+
+.title-link,
+.title-link:active,
+.title-link:focus,
+.title-link:hover {
+	color: 				$white;
+	text-decoration: 	none;
+}
+
+/*
+	MASTHEAD
+ */
+
+.masthead {
+	background: 				$darkBlue url(images/dmc-header.jpg) no-repeat top center;
+	box-sizing: 				border-box;
+	color: 						$white;
+	min-height: 				400px;
+	padding: 					$gridGutterWidth*2 0;
+	position: 					relative;
+	text-align: 				center;
+	@include background-size(cover);
+	@include box-shadow(inset 0 3px 7px rgba(0,0,0,0.2), inset 0 -3px 7px rgba(0,0,0,0.2));
+
+	.hgroup {
+		margin: 				3*$gridGutterWidth auto $gridGutterWidth auto;
+		max-width: 				640px;
+		overflow: 				hidden;
+		text-shadow: 			0 1px 3px rgba(0,0,0,0.4), 0 0 30px rgba(0,0,0,0.075);
+		@include transition(all 0.2s ease-in-out);
+
+		@media (max-width: 767px) {
+			margin: 			$gridGutterWidth auto $gridGutterWidth auto;
+		}
+	}
+
+	.tagline {
+
+		span {
+			display: 			inline-block;
+			position: 			relative;
+
+			&:before,
+			&:after {
+				border-bottom: 	1px solid $white;
+				border-top: 	1px solid $white;
+				content: 		"";
+				height: 		5px;
+				position: 		absolute;
+				top: 			50%;
+				width: 			600px;
+			}
+
+			&:before {
+				margin-right: 	0.75*$gridGutterWidth;
+				right: 			100%;
+			}
+
+			&:after {
+				left: 			100%;
+				margin-left: 	0.75*$gridGutterWidth;
+			}
+		}
+	}
+
+	@media (max-width: 767px) {
+		// margin-left: 			-$gridGutterWidth;
+		// margin-right: 			-$gridGutterWidth;
+		min-height: 			250px;
+	}
+
+	.contact-method {
+		background: 			$white;
+		color: 					$darkBlue;
+		display: 				inline-block;
+		height: 				4*$gridGutterWidth;
+		line-height: 			4*$gridGutterWidth;
+		margin: 				0 $gridGutterWidth/2;
+		opacity: 				0.5;
+		width: 					4*$gridGutterWidth;
+		@include border-radius(2*$gridGutterWidth);
+		@include transition(all 0.2s ease-in-out);
+
+		@media (max-width: 767px) {
+			height: 			3*$gridGutterWidth;
+			line-height: 		3*$gridGutterWidth;
+			width: 				3*$gridGutterWidth;
+			@include border-radius(1.5*$gridGutterWidth);
+		}
+
+		&:active,
+		&:focus,
+		&:hover {
+			opacity: 			1;
+			text-decoration: 	none;
+			@include transition(all 0.4s ease-in-out);
+		}
+	}
+}
+
+section,
+footer {
+	min-height: 				200px;
+	overflow: 					hidden;
+	position: 					relative;
+
+	@media (max-width: 767px) {
+		min-height: 			0 !important;
+		// margin-left: 			-$gridGutterWidth;
+		// margin-right: 			-$gridGutterWidth;
+	}
+}
+
+.wrapper {
+	padding: 					0 $gridGutterWidth;
+	@extend .container-fluid;
+}
+
+.promo {
+	.page--app & {
+		a {
+			cursor: 			default;
+		}
+	}
+}
+
+footer {
+	background: 				$darkerBlue;
+	color: 						$lighterBlue;
+	min-height: 				160px;
+	padding: 					$gridGutterWidth 0 2*$gridGutterWidth 0;
+
+	@media (max-width: 767px) {
+		min-height: 			0;
+	}
+
+	a {
+		color: 					$lightBlue;
+
+		&:active,
+		&:focus,
+		&:hover {
+			color: 				$white;
+		}
+	}
+
+	.span2 {
+		margin-left: 			2.12% !important;
+	}
+}
+
+.photo-container {
+	background: 				$white;
+	height: 					7*$gridGutterWidth;
+	overflow: 					hidden;
+	position: 					relative;
+	margin: 					0 auto;
+	width: 						7*$gridGutterWidth;
+	@include border-radius(3.5*$gridGutterWidth);
+
+	img {
+		height: 				100%;
+		width: 					100%;
+		@include border-radius(3.5*$gridGutterWidth);
+	}
+}
+
+.intro {
+	margin: 					0 $gridGutterWidth $gridGutterWidth 0;
+
+	@media (max-width: 767px) {
+		margin-top: 			$gridGutterWidth;
+		text-align: 			center;
+	}
+}
+
+.footer-contacts {
+	border-left: 				1px solid $blue;
+	list-style-position: 		inside;
+	margin: 					0;
+	padding-left: 				$gridGutterWidth;
+
+	@media (max-width: 767px) {
+		border-left: 			none;
+		padding: 				0;
+		list-style-type: 		none;
+		margin-bottom: 			$gridGutterWidth;
+		text-align: 			center;
+
+		li {
+			display: 			inline-block;
+			margin: 			0;
+			padding: 			0;
+		}
+
+		a {
+			padding: 			$gridGutterWidth/2;
+		}
+	}
+}
+
+.copyright {
+	background: 				#111;
+	bottom: 					0;
+	color: 						$blue;
+	left: 						0;
+	margin: 					0;
+	padding: 					$gridGutterWidth/2 0;
+	position: 					absolute;
+	text-align: 				center;
+	width: 						100%;
+
+	a {
+		color: 					$lightBlue;
+	}
+}
+
+/*-----animations-----*/
+
+.fade-enter-setup,
+.fade-leave-setup {
+	@include transition(all cubic-bezier(0.250, 0.460, 0.450, 0.940) 0.5s);
+}
+
+.fade-enter-setup {
+	opacity: 					1;
+}
+
+.fade-enter-start {
+	opacity: 					0;
+}
+
+.fade-leave-setup {
+	opacity: 					0;
+}
+
+.fade-leave-start {
+	opacity: 					0%;
+}	
+
+.view-enter-setup,
+.view-leave-setup {
+	@include transition(all cubic-bezier(0.250, 0.460, 0.450, 0.940) 0.5s);
+}
+
+.view-enter-setup {
+	left: 						100px;
+	opacity: 					0;
+	position: 					absolute;
+	width: 						100%;
+}
+.view-enter-setup.view-enter-start {
+	left: 						0;
+	opacity: 					1;
+}
+
+.view-leave-setup {
+	left: 						0;
+	opacity: 					1;
+	position: 					absolute;
+	width: 						100%;
+}
+.view-leave-setup.view-leave-start {
+	left: 						-100px;
+	opacity: 					0;
+}
+
+hr {
+	border-top: 				1px solid #d5d5d5;
+}

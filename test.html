@@ -1,0 +1,49 @@
+<html ng-app>
+	<head>
+		<title>Testing Angular JSON</title>
+	</head>
+	<body>
+
+		<div class="btngroup">
+			<button ng-click="predicate = 'title'; reverse=!reverse">Title</button>
+			<button ng-click="predicate = 'buylink'; reverse=!reverse">Link</button>
+		</div>
+
+		<ul ng-controller="ShowCtrl">
+			<li ng-repeat="book in books.books|orderBy:predicate:reverse">
+				<h4 ng-bind-html-unsafe="book.title"></h4>
+				<a href="{{book.buylink}}">{{book.buylink}}</a>
+				<img src="{{book.featuredimage}}" alt="">
+				<!--<h4 ng-bind-html-unsafe="book.title"></h4>
+				<p ng-bind-html-unsafe="book.buy-link"></p>
+				<img src="{{book.featured-image}}">-->
+			</lu>
+		</ul>
+
+		<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.0.6/angular.min.js"></script>
+		<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.0.6/angular-resource.min.js"></script>
+		<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.0.6/angular-sanitize.js"></script>
+		<script>
+			angular.module('test', ['ngSanitize']).config(function($routeProvider) {
+				$routeProvider.
+					when('/', {controller:ShowCtrl}).
+					otherwise({redirectTo:'/'});
+				});
+
+			function ShowCtrl($scope, $http) {
+				var url = "http://danielmccrohan.com/api/custom/get_books/";
+
+				$http.get(url).
+					success(function(data, status, headers, config) {
+						console.log(data.books);
+						$scope.books = {
+							books: data.books
+						};
+					}).
+					error(function(data, status, headers, config) {
+						console.error('Error fetching posts:', data);
+					});
+			}
+		</script>
+	</body>
+</html>
